@@ -1,2 +1,2 @@
 # minishell
-42 minishell
+42 project minishell
