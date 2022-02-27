@@ -6,11 +6,33 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/02/26 19:47:15 by hardella         ###   ########.fr       */
+/*   Updated: 2022/02/27 20:00:27 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
+
+int	str_check(char *str)
+{
+	int	i;
+	int	dif;
+
+	i = 0;
+	dif = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ' && str[i] != '|')
+			dif = 1;
+		if (str[i] == '|')
+		{
+			if (dif == 0)
+				return (1);
+			dif = 0;
+		}
+		i++;
+	}
+	return (0);
+}
 
 int	check_cmd(char *cmd)
 {
@@ -35,17 +57,24 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
 	char	**split;
-	int		status;
 
 	(void)argc;
 	(void)argv;
-	status = 1;
-	while (status)
+	//handle env (malloc include)
+	//need to handle signals
+	while (1)
 	{
-		ft_putstr_fd("minishell> ", 1);
-		str = get_next_line(0);
-		split = parsing_str(str, envp);
-		status = 0;
+		str = readline("minishell> ");
+		add_history(str);
+		//need to handle signals
+		if (str == 0)
+			return (free_all()); //need to free all
+		if (str_check(str) == 0)
+			return (error_str()); //some wrong str
+		else
+			exec_cmd(&line, str); //line is struct for input
+		// split = parsing_str(str, envp);
+		free_line_all(&line, str);
 	}
 	return (0);
 }

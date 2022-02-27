@@ -14,6 +14,8 @@ HEADER = ./headers/minishell.h
 
 FLAGS = -Wall -Wextra -Werror -g
 
+readline = ./readline/libhistory.a ./readline/libreadline.a
+
 .PHONY: all clean fclean re
 
 %.o:	%.c ${HEADER}
@@ -21,7 +23,7 @@ FLAGS = -Wall -Wextra -Werror -g
 
 ${NAME}: ${OBJ_SRC}
 			make -C ./libft/
-			${CC} ${FLAGS} ${OBJ_SRC} ./libft/libft.a -o ${NAME}
+			${CC} ${FLAGS} ${OBJ_SRC} ./libft/libft.a $(readline) -ltermcap -o ${NAME}
 
 all: ${NAME}
 
