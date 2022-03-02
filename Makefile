@@ -12,7 +12,7 @@ REM = rm -f
 
 HEADER = ./headers/minishell.h
 
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -g #Werror need to be added   -Werror 
 
 readline = ./readline/libhistory.a ./readline/libreadline.a
 

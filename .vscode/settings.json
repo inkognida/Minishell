@@ -1,0 +1,8 @@
+{
+	"files.associations": {
+		"readline.h": "c",
+		"unistd.h": "c",
+		"libft.h": "c",
+		"pipex.h": "c"
+	}
+}
