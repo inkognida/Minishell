@@ -6,7 +6,7 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/03 19:48:19 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/03 20:06:24 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	g_exit_status;
 
-int	valid_string(char *str)
+char	*valid_string(char *str)
 {
 	char	*valid_str;
 	int		i;
@@ -25,32 +25,31 @@ int	valid_string(char *str)
 	j = 0;
 	valid_str = malloc(sizeof(char) * ft_strlen(str));
 	if (valid_str == NULL)
-		return (1); //error
+		return (NULL);
 	while (str[i])
 	{
 		if (str[i] == '\'')
 		{
-			i++;
-			while (str[i] != '\'' && str[i])
-				valid_str[j++] = str[i++];
+			while (str[++i] != '\'' && str[i])
+				valid_str[j++] = str[i];
 			if (str[i] == '\'')
 				i++;
+			else if (str[i] == '\0')
+				return (NULL);
 		}
 		if (str[i] == '"')
 		{
-			i++;
-			while (str[i] != '"' && str[i])
-				valid_str[j++] = str[i++];
+			while (str[++i] != '"' && str[i])
+				valid_str[j++] = str[i];
 			if (str[i] == '"')
 				i++;
+			else if (str[i] == '\0')
+				return (NULL);
 		}
-		valid_str[j] = str[i];
-		i++;
-		j++;
+		valid_str[j++] = str[i++];
 	}
 	valid_str[j] = '\0';
-	printf("%s\n", valid_str);
-	return (1);
+	return (valid_str);
 }
 
 int	launch_cmd(char *cmd, char **envp)
@@ -120,6 +119,7 @@ void	cut_cmd(char **split)
 int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
+	char	*valid;
 
 	(void)argc;
 	(void)argv;
@@ -134,8 +134,14 @@ int	main(int argc, char **argv, char **envp)
 		signal(SIGQUIT, SIG_IGN);
 		if (str == NULL)
 			return (free_all()); //need to free all
-		if (valid_string(str) == 0)
+		valid = valid_string(str);
+		if (valid == NULL)
 			printf("wrong\n");
+		else
+		{
+			free(str);
+			str = valid;
+		}
 		//parse_string(str); //probably need to add structure with cmds
 			// return (not_valid_string());
 		// else
