@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/03 18:53:49 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/03 19:47:29 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,13 @@ void	ft_execute(char *cmd1, char **envp)
 	if (!(envp))
 		ft_puterror();
 	if (ft_strnstr(cmds[0], "/", ft_strlen(cmds[0])))
+	{
 		if (execve(cmds[0], cmds, envp) == -1)
 			ft_puterror();
-	else if (execve(ft_findpath(cmds[0], envp), cmds, envp) == -1)
-		ft_puterror();
+	}
+	else
+		if (execve(ft_findpath(cmds[0], envp), cmds, envp) == -1)
+			ft_puterror();
 }
 
 void	ft_chpar(char *cmd, char **envp)
