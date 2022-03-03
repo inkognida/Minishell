@@ -3,80 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/03 18:55:17 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/03 20:06:24 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
+
 int	g_exit_status;
 
-// int	valid_string(char *str)
-// {
-// 	char	*valid_str;
-// 	int		i;
-
-// 	i = 0;
-// 	valid_str = malloc(sizeof(char) * (ft_strlen(str) + 1));
-// 	if (!valid_str)
-// 		return (0);
-// 	while (str[i])
-// 	{
-// 		while (str[i] != ' ' || str[i])
-// 			valid_str[i] = str[i++];
-// 		if (check_valid_cmd(valid_str) == 1)
-// 		{
-// 			i++;
-// 			if ((int)str[i] == 39)
-// 			{
-// 				while ((int)str[++i] != 39)
-// 					continue ;
-// 				if (str[i] == '|' || str[i] == '')		
-// 			}
-// 		}
-// 	}
-// 	return (0);
-// }
-
-int	valid_string(char *str)
+char	*valid_string(char *str)
 {
-	int	i;
-	int	sq;
-	int	dq;
+	char	*valid_str;
+	int		i;
+	int		j;
 
 	i = 0;
-	sq = 0;
-	dq = 0;
+	j = 0;
+	valid_str = malloc(sizeof(char) * ft_strlen(str));
+	if (valid_str == NULL)
+		return (NULL);
 	while (str[i])
 	{
 		if (str[i] == '\'')
 		{
-			i++;
-			sq++;
-			while (str[i] != '\'' && str[i])
-				i++;
+			while (str[++i] != '\'' && str[i])
+				valid_str[j++] = str[i];
 			if (str[i] == '\'')
-				sq++;
+				i++;
+			else if (str[i] == '\0')
+				return (NULL);
 		}
 		if (str[i] == '"')
 		{
-			i++;
-			dq++;
-			while (str[i] != '"' && str[i])
-				i++;
+			while (str[++i] != '"' && str[i])
+				valid_str[j++] = str[i];
 			if (str[i] == '"')
-				dq++;
+				i++;
+			else if (str[i] == '\0')
+				return (NULL);
 		}
-		if (str[i] == ';' || str[i] == '\\')
-			return (0);
-		i++;
+		valid_str[j++] = str[i++];
 	}
-	if (sq % 2 == 0 && dq % 2 == 0)
-		return (1);
-	return (0);
+	valid_str[j] = '\0';
+	return (valid_str);
 }
 
 int	launch_cmd(char *cmd, char **envp)
@@ -126,10 +99,27 @@ void	not_valid_string(void)
 	g_exit_status = 2;
 }
 
+void	cut_cmd(char **split)
+{
+	exit(1);
+}
+
+// void	parsing_str(char *str)
+// {
+// 	char **cmds;
+
+// 	cmds = ft_split(str, ' ');
+// 	if (cmds == NULL)
+// 		return ; //need to free all
+	
+	
+// }
+
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
-	// char	**split;
+	char	*valid;
 
 	(void)argc;
 	(void)argv;
@@ -144,8 +134,15 @@ int	main(int argc, char **argv, char **envp)
 		signal(SIGQUIT, SIG_IGN);
 		if (str == NULL)
 			return (free_all()); //need to free all
-		if (valid_string(str) == 0)
-			exit(1);
+		valid = valid_string(str);
+		if (valid == NULL)
+			printf("wrong\n");
+		else
+		{
+			free(str);
+			str = valid;
+		}
+		//parse_string(str); //probably need to add structure with cmds
 			// return (not_valid_string());
 		// else
 		if (ft_strlen(str) == 0)
