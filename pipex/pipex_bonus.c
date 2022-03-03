@@ -6,11 +6,11 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/03 19:09:01 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/03 19:46:41 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../headers/minishell.h"
 
 int	ft_open(char *filename, int flag)
 {
@@ -31,7 +31,10 @@ void	ft_execute(char *cmd1, char **envp)
 	cmds = ft_split_pipex(cmd1, ' ');
 	if (!(envp))
 		ft_puterror();
-	if (execve(ft_findpath(cmds[0], envp), cmds, envp) == -1)
+	// if (ft_strnstr(cmds[0], "/", ft_strlen(cmds[0]))) //govno iz zopi
+	// 	if (execve(cmds[0], cmds, envp) == -1)
+	// 		ft_puterror();
+	else if (execve(ft_findpath(cmds[0], envp), cmds, envp) == -1)
 		ft_puterror();
 }
 

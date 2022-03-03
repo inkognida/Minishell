@@ -6,7 +6,7 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/03 18:31:50 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/03 19:48:19 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,103 +15,58 @@
 
 int	g_exit_status;
 
-int	check_valid_cmd(char *valid_str)
-{
-	if (ft_strncmp(valid_str, "echo", ft_strlen(valid_str)) == 0)
-		return (1);
-	if (ft_strncmp(valid_str, "cd", ft_strlen(valid_str)) == 0)
-		return (1);
-	if (ft_strncmp(valid_str, "pwd", ft_strlen(valid_str)) == 0)
-		return (1);
-	if (ft_strncmp(valid_str, "export", ft_strlen(valid_str)) == 0)
-		return (1);
-	if (ft_strncmp(valid_str, "unset", ft_strlen(valid_str)) == 0)
-		return (1);
-	if (ft_strncmp(valid_str, "env", ft_strlen(valid_str)) == 0)
-		return (1);
-	if (ft_strncmp(valid_str, "exit", ft_strlen(valid_str)) == 0)
-		return (1);
-}
-
-// int	valid_string(char *str)
-// {
-// 	char	*valid_str;
-// 	int		i;
-
-// 	i = 0;
-// 	valid_str = malloc(sizeof(char) * (ft_strlen(str) + 1));
-// 	if (!valid_str)
-// 		return (0);
-// 	while (str[i])
-// 	{
-// 		while (str[i] != ' ' || str[i])
-// 			valid_str[i] = str[i++];
-// 		if (check_valid_cmd(valid_str) == 1)
-// 		{
-// 			i++;
-// 			if ((int)str[i] == 39)
-// 			{
-// 				while ((int)str[++i] != 39)
-// 					continue ;
-// 				if (str[i] == '|' || str[i] == '')		
-// 			}
-// 		}
-// 	}
-// 	return (0);
-// }
-
-
 int	valid_string(char *str)
 {
-	int	i;
-	int	sq;
-	int	dq;
+	char	*valid_str;
+	int		i;
+	int		j;
 
 	i = 0;
-	sq = 0;
-	dq = 0;
+	j = 0;
+	valid_str = malloc(sizeof(char) * ft_strlen(str));
+	if (valid_str == NULL)
+		return (1); //error
 	while (str[i])
 	{
 		if (str[i] == '\'')
 		{
 			i++;
-			sq++;
 			while (str[i] != '\'' && str[i])
-				i++;
+				valid_str[j++] = str[i++];
 			if (str[i] == '\'')
-				sq++;
+				i++;
 		}
 		if (str[i] == '"')
 		{
 			i++;
-			dq++;
 			while (str[i] != '"' && str[i])
-				i++;
+				valid_str[j++] = str[i++];
 			if (str[i] == '"')
-				dq++;
+				i++;
 		}
-		if (str[i] == ';' || str[i] == '\\')
-			return (0);
+		valid_str[j] = str[i];
 		i++;
+		j++;
 	}
-	if (sq % 2 == 0 && dq % 2 == 0)
-		return (1);
-	return (0);
+	valid_str[j] = '\0';
+	printf("%s\n", valid_str);
+	return (1);
 }
 
-int	check_cmd(char *cmd)
+int	launch_cmd(char *cmd, char **envp)
 {
-	if (ft_strncmp(cmd, "ls -la", ft_strlen(cmd)) == 0)
-		return (1);
-	return (0);
-}
+	pid_t	pid;
 
-void	parsing_str(char *str, char **envp)
-{
-	if (check_cmd(str))
-		ft_execute(str, envp);
+	pid = fork();
+	if (pid == 0)
+		ft_execute(cmd, envp);
+	else if (pid < 0)
+   		ft_puterror();
 	else
-		return ;
+	{
+		waitpid(pid, 0, WUNTRACED);
+	}
+	return (1);
 }
 
 void	handle_signal(int sig)
@@ -146,29 +101,25 @@ void	not_valid_string(void)
 }
 
 void	cut_cmd(char **split)
-
-void	parsing_str(char *str, t_cmd *cmds)
 {
-	(void)cmds;
-	char	**split;
-	int		i;
-	
-	i = 0;
-	split = ft_split(str, '|');
-	if (!split)
-		return ; //free all 
-	while (split[i] != NULL)
-	{
-		
-	}
-	
+	exit(1);
 }
+
+// void	parsing_str(char *str)
+// {
+// 	char **cmds;
+
+// 	cmds = ft_split(str, ' ');
+// 	if (cmds == NULL)
+// 		return ; //need to free all
+	
+	
+// }
 
 
 int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
-	t_cmd	*cmds;
 
 	(void)argc;
 	(void)argv;
@@ -177,7 +128,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		str = readline("minishell> ");
+		str = ft_strtrim(readline("minishell> "), " \t");
 		add_history(str);
 		signal(SIGINT, handle_signal);
 		signal(SIGQUIT, SIG_IGN);
@@ -185,10 +136,13 @@ int	main(int argc, char **argv, char **envp)
 			return (free_all()); //need to free all
 		if (valid_string(str) == 0)
 			printf("wrong\n");
-		parse_string(str, cmds);
+		//parse_string(str); //probably need to add structure with cmds
 			// return (not_valid_string());
 		// else
-		// 	exec_cmd(&line, str);
+		if (ft_strlen(str) == 0)
+			continue ;
+		// split = parsing_str(str, envp);
+		launch_cmd(str, envp);
 		// free_line_all(&line, str);
 	}
 	return (0);
