@@ -3,35 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/03 16:06:55 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/03 18:55:17 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-
 int	g_exit_status;
-
-int	check_valid_cmd(char *valid_str)
-{
-	if (ft_strncmp(valid_str, "echo", ft_strlen(valid_str)) == 0)
-		return (1);
-	if (ft_strncmp(valid_str, "cd", ft_strlen(valid_str)) == 0)
-		return (1);
-	if (ft_strncmp(valid_str, "pwd", ft_strlen(valid_str)) == 0)
-		return (1);
-	if (ft_strncmp(valid_str, "export", ft_strlen(valid_str)) == 0)
-		return (1);
-	if (ft_strncmp(valid_str, "unset", ft_strlen(valid_str)) == 0)
-		return (1);
-	if (ft_strncmp(valid_str, "env", ft_strlen(valid_str)) == 0)
-		return (1);
-	if (ft_strncmp(valid_str, "exit", ft_strlen(valid_str)) == 0)
-		return (1);
-}
 
 // int	valid_string(char *str)
 // {
@@ -59,7 +40,6 @@ int	check_valid_cmd(char *valid_str)
 // 	}
 // 	return (0);
 // }
-
 
 int	valid_string(char *str)
 {
@@ -99,24 +79,20 @@ int	valid_string(char *str)
 	return (0);
 }
 
-
-int	check_cmd(char *cmd)
+int	launch_cmd(char *cmd, char **envp)
 {
-	if (ft_strncmp(cmd, "ls", ft_strlen(cmd)) == 0)
-		return (1);
-	return (0);
-}
+	pid_t	pid;
 
-char	**parsing_str(char *str, char **envp)
-{
-	char	**split;
-
-	split = ft_split(str, ' ');
-	if (check_cmd(split[0]))
-		ft_execute(split[0], envp);
+	pid = fork();
+	if (pid == 0)
+		ft_execute(cmd, envp);
+	else if (pid < 0)
+   		ft_puterror();
 	else
-		return (NULL);
-	return (split);
+	{
+		waitpid(pid, 0, WUNTRACED);
+	}
+	return (1);
 }
 
 void	handle_signal(int sig)
@@ -153,7 +129,7 @@ void	not_valid_string(void)
 int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
-	char	**split;
+	// char	**split;
 
 	(void)argc;
 	(void)argv;
@@ -162,7 +138,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-		str = readline("minishell> ");
+		str = ft_strtrim(readline("minishell> "), " \t");
 		add_history(str);
 		signal(SIGINT, handle_signal);
 		signal(SIGQUIT, SIG_IGN);
@@ -172,7 +148,10 @@ int	main(int argc, char **argv, char **envp)
 			exit(1);
 			// return (not_valid_string());
 		// else
-		// 	exec_cmd(&line, str);
+		if (ft_strlen(str) == 0)
+			continue ;
+		// split = parsing_str(str, envp);
+		launch_cmd(str, envp);
 		// free_line_all(&line, str);
 	}
 	return (0);

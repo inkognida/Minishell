@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/02/26 18:36:22 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/03 18:53:49 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../headers/minishell.h"
 
 int	ft_open(char *filename, int flag)
 {
@@ -31,7 +31,10 @@ void	ft_execute(char *cmd1, char **envp)
 	cmds = ft_split_pipex(cmd1, ' ');
 	if (!(envp))
 		ft_puterror();
-	if (execve(ft_findpath(cmds[0], envp), cmds, envp) == -1)
+	if (ft_strnstr(cmds[0], "/", ft_strlen(cmds[0])))
+		if (execve(cmds[0], cmds, envp) == -1)
+			ft_puterror();
+	else if (execve(ft_findpath(cmds[0], envp), cmds, envp) == -1)
 		ft_puterror();
 }
 
