@@ -6,7 +6,7 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:15:09 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/02 17:43:47 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/03 17:41:36 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_cmd	t_cmd;
 typedef struct s_cmd
 {
 	char	*string;
+	int		flag;
 	t_cmd	*next;
 }				t_cmd;
 

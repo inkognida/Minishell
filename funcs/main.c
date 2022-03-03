@@ -6,7 +6,7 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/03 16:06:55 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/03 18:31:50 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,24 +99,19 @@ int	valid_string(char *str)
 	return (0);
 }
 
-
 int	check_cmd(char *cmd)
 {
-	if (ft_strncmp(cmd, "ls", ft_strlen(cmd)) == 0)
+	if (ft_strncmp(cmd, "ls -la", ft_strlen(cmd)) == 0)
 		return (1);
 	return (0);
 }
 
-char	**parsing_str(char *str, char **envp)
+void	parsing_str(char *str, char **envp)
 {
-	char	**split;
-
-	split = ft_split(str, ' ');
-	if (check_cmd(split[0]))
-		ft_execute(split[0], envp);
+	if (check_cmd(str))
+		ft_execute(str, envp);
 	else
-		return (NULL);
-	return (split);
+		return ;
 }
 
 void	handle_signal(int sig)
@@ -150,10 +145,30 @@ void	not_valid_string(void)
 	g_exit_status = 2;
 }
 
+void	cut_cmd(char **split)
+
+void	parsing_str(char *str, t_cmd *cmds)
+{
+	(void)cmds;
+	char	**split;
+	int		i;
+	
+	i = 0;
+	split = ft_split(str, '|');
+	if (!split)
+		return ; //free all 
+	while (split[i] != NULL)
+	{
+		
+	}
+	
+}
+
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
-	char	**split;
+	t_cmd	*cmds;
 
 	(void)argc;
 	(void)argv;
@@ -169,7 +184,8 @@ int	main(int argc, char **argv, char **envp)
 		if (str == NULL)
 			return (free_all()); //need to free all
 		if (valid_string(str) == 0)
-			exit(1);
+			printf("wrong\n");
+		parse_string(str, cmds);
 			// return (not_valid_string());
 		// else
 		// 	exec_cmd(&line, str);
