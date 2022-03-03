@@ -6,12 +6,11 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/02 18:55:25 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/03 16:06:55 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
-
 
 
 int	g_exit_status;
@@ -54,50 +53,48 @@ int	check_valid_cmd(char *valid_str)
 // 			{
 // 				while ((int)str[++i] != 39)
 // 					continue ;
-// 				if (str[i] == '|' || str[i] == '')
-					
+// 				if (str[i] == '|' || str[i] == '')		
 // 			}
 // 		}
-		
 // 	}
 // 	return (0);
 // }
 
 
-int	valid_string(char *str) //govno iz zhopi
+int	valid_string(char *str)
 {
-	int	j;
 	int	i;
-	int	single_quote;
-	int	double_quote;
+	int	sq;
+	int	dq;
 
-	single_quote = 0;
-	double_quote = 0;
 	i = 0;
-	j = 0;
+	sq = 0;
+	dq = 0;
 	while (str[i])
 	{
 		if (str[i] == '\'')
 		{
-			single_quote++;
+			i++;
+			sq++;
 			while (str[i] != '\'' && str[i])
 				i++;
-			single_quote++;	
+			if (str[i] == '\'')
+				sq++;
 		}
-		i++;
-	}
-	while (str[i])
-	{
 		if (str[i] == '"')
 		{
-			double_quote++;
+			i++;
+			dq++;
 			while (str[i] != '"' && str[i])
 				i++;
-			double_quote++;	
+			if (str[i] == '"')
+				dq++;
 		}
+		if (str[i] == ';' || str[i] == '\\')
+			return (0);
 		i++;
 	}
-	if (single_quote % 2 == 0 && double_quote % 2 == 0)
+	if (sq % 2 == 0 && dq % 2 == 0)
 		return (1);
 	return (0);
 }
@@ -171,7 +168,6 @@ int	main(int argc, char **argv, char **envp)
 		signal(SIGQUIT, SIG_IGN);
 		if (str == NULL)
 			return (free_all()); //need to free all
-		printf("wrong string input %d\n", valid_string(str));
 		if (valid_string(str) == 0)
 			exit(1);
 			// return (not_valid_string());
