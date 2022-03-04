@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/03 19:49:29 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/04 13:46:12 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,19 @@ int	ft_open(char *filename, int flag)
 		return (open(filename, O_CREAT | O_RDWR | O_TRUNC, 0777));
 }
 
-void	ft_execute(char *cmd1, char **envp)
+void	ft_execute(char *cmd1, char **args, char **envp)
 {
 	char	**cmds;
 
-	cmds = ft_split_pipex(cmd1, ' ');
 	if (!(envp))
 		ft_puterror();
-	if (ft_strnstr(cmds[0], "/", ft_strlen(cmds[0])))
+	if (ft_strnstr(args[0], "/", ft_strlen(args[0])))
 	{
-		if (execve(cmds[0], cmds, envp) == -1)
+		if (execve(args[0], args, envp) == -1)
 			ft_puterror();
 	}
 	else
-		if (execve(ft_findpath(cmds[0], envp), cmds, envp) == -1)
+		if (execve(ft_findpath(args[0], envp), args, envp) == -1)
 			ft_puterror();
 }
 
@@ -55,7 +54,7 @@ void	ft_chpar(char *cmd, char **envp)
 	{
 		close(files[0]);
 		dup2(files[1], 1);
-		ft_execute(cmd, envp);
+		// ft_execute(cmd, envp);  чето сделать!!!
 	}
 	else
 	{

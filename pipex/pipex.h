@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 21:04:44 by hardella          #+#    #+#             */
-/*   Updated: 2022/02/26 18:36:59 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/04 13:45:05 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void		ft_bonuserror(void);
 void		ft_putmallocerror(char *str);
 void		ft_puterror(void);
 int			ft_strlen_pipex(const char *s);
-void		ft_execute(char *cmd1, char **envp);
+void		ft_execute(char *cmd1, char **args, char **envp);
 int			ft_open(char *filename, int flag);
 void		ft_heredoc(char *limiter);
 void		ft_chpar(char *cmd, char **envp);

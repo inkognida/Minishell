@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/03 20:06:24 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/04 14:25:37 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
-
 
 int	g_exit_status;
 
@@ -33,7 +32,12 @@ char	*valid_string(char *str)
 			while (str[++i] != '\'' && str[i])
 				valid_str[j++] = str[i];
 			if (str[i] == '\'')
+			{
 				i++;
+				continue ;
+			}
+			if (str[i] == '"')
+				continue ;
 			else if (str[i] == '\0')
 				return (NULL);
 		}
@@ -42,7 +46,12 @@ char	*valid_string(char *str)
 			while (str[++i] != '"' && str[i])
 				valid_str[j++] = str[i];
 			if (str[i] == '"')
+			{
 				i++;
+				continue ;
+			}
+			if (str[i] == '\'')
+				continue ;
 			else if (str[i] == '\0')
 				return (NULL);
 		}
@@ -52,13 +61,47 @@ char	*valid_string(char *str)
 	return (valid_str);
 }
 
-int	launch_cmd(char *cmd, char **envp)
+char	**split_args(char *str)
+{
+	char	*valid;
+	char	**args;
+	int		i;
+	int		j;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == '\'')
+			while (str[++i] != '\'' && str[i])
+				if (str[i] == ' ')
+					str[i] = -1;
+		if (str[i] == '"')
+		{
+			while (str[++i] != '"' && str[i])
+				if (str[i] == ' ')
+					str[i] = -1;
+		}
+	}
+	valid = valid_string(str);
+	args = ft_split(valid, ' ');
+	i = -1;
+	while (args[++i])
+	{
+		j = -1;
+		while (args[i][++j])
+			if (args[i][j] == -1)
+				args[i][j] = ' ';
+	}
+	return (args);
+}
+
+int	launch_cmd(char *cmd, char **args, char **envp)
 {
 	pid_t	pid;
 
 	pid = fork();
 	if (pid == 0)
-		ft_execute(cmd, envp);
+		ft_execute(cmd, args, envp);
 	else if (pid < 0)
    		ft_puterror();
 	else
@@ -104,22 +147,11 @@ void	cut_cmd(char **split)
 	exit(1);
 }
 
-// void	parsing_str(char *str)
-// {
-// 	char **cmds;
-
-// 	cmds = ft_split(str, ' ');
-// 	if (cmds == NULL)
-// 		return ; //need to free all
-	
-	
-// }
-
-
 int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
 	char	*valid;
+	char	**args;
 
 	(void)argc;
 	(void)argv;
@@ -136,19 +168,19 @@ int	main(int argc, char **argv, char **envp)
 			return (free_all()); //need to free all
 		valid = valid_string(str);
 		if (valid == NULL)
-			printf("wrong\n");
-		else
 		{
+			printf("quote error\n");
 			free(str);
-			str = valid;
+			continue ;
 		}
 		//parse_string(str); //probably need to add structure with cmds
 			// return (not_valid_string());
 		// else
 		if (ft_strlen(str) == 0)
 			continue ;
-		// split = parsing_str(str, envp);
-		launch_cmd(str, envp);
+		args = split_args(str);
+
+		launch_cmd(str, args, envp);
 		// free_line_all(&line, str);
 	}
 	return (0);

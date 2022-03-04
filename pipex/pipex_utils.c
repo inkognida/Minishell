@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 14:33:00 by hardella          #+#    #+#             */
-/*   Updated: 2022/02/26 18:32:12 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/04 13:47:32 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ void	ft_bonus_helper(int fd2, char **argv, int argc, char **envp)
 	dup2(fd2, 1);
 	waitall = fork();
 	if (!waitall)
-		ft_execute(argv[argc - 2], envp);
+		(void)waitall;
+		// ft_execute(argv[argc - 2], envp);   чето сделать!!!
 	else
 		while (argc-- - 4)
 			waitpid(waitall, NULL, 0);
