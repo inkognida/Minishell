@@ -6,7 +6,7 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:15:09 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/03 19:11:54 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/04 14:41:10 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,7 @@ typedef struct s_cmd
 	int		flag;
 	t_cmd	*next;
 }				t_cmd;
+
+char	**split_args(char *str);
 
 #endif

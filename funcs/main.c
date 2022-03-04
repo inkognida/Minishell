@@ -6,12 +6,11 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/04 14:14:35 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/04 20:55:48 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
-
 
 int	g_exit_status;
 
@@ -33,7 +32,12 @@ char	*valid_string(char *str)
 			while (str[++i] != '\'' && str[i])
 				valid_str[j++] = str[i];
 			if (str[i] == '\'')
+			{
 				i++;
+				continue ;
+			}
+			if (str[i] == '"')
+				continue ;
 			else if (str[i] == '\0')
 				return (NULL);
 		}
@@ -42,7 +46,12 @@ char	*valid_string(char *str)
 			while (str[++i] != '"' && str[i])
 				valid_str[j++] = str[i];
 			if (str[i] == '"')
+			{
 				i++;
+				continue ;
+			}
+			if (str[i] == '\'')
+				continue ;
 			else if (str[i] == '\0')
 				return (NULL);
 		}
@@ -52,18 +61,61 @@ char	*valid_string(char *str)
 	return (valid_str);
 }
 
-int	launch_cmd(char **cmds, char **envp)
+char	**split_args(char *str)
+{
+	char	*valid;
+	char	**args;
+	int		i;
+	int		j;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (str[i] == '\'')
+			while (str[++i] != '\'' && str[i])
+				if (str[i] == ' ')
+					str[i] = -1;
+		if (str[i] == '"')
+		{
+			while (str[++i] != '"' && str[i])
+				if (str[i] == ' ')
+					str[i] = -1;
+		}
+	}
+	valid = valid_string(str);
+	args = ft_split(valid, ' ');
+	if (args == NULL)
+		return (NULL);
+	i = -1;
+	while (args[++i])
+	{
+		j = -1;
+		while (args[i][++j])
+			if (args[i][j] == -1)
+				args[i][j] = ' ';
+	}
+	return (args);
+}
+
+int	launch_cmd(char **cmd, char **envp)
 {
 	pid_t	pid;
 
-	pid = fork();
-	if (pid == 0)
-		// ft_execute(cmds[0], envp);
-		pipex(cmds, envp);
-	else if (pid < 0)
-   		ft_puterror();
-	else
-		waitpid(pid, 0, WUNTRACED);
+	if (cmd)
+	{
+		pid = fork();
+		if (pid == 0)
+		{
+			if (len_cmds(cmd) > 1)
+				pipex(cmd, envp);
+			else
+				ft_execute(cmd[0], envp);
+		}
+		else if (pid < 0)
+			ft_puterror();
+		else
+			waitpid(pid, 0, WUNTRACED);
+	}
 	return (1);
 }
 
@@ -148,21 +200,14 @@ int	main(int argc, char **argv, char **envp)
 			return (free_all()); //need to free all
 		valid = valid_string(str);
 		if (valid == NULL)
-			printf("wrong\n");
-		else
 		{
+			printf("quote error\n");
 			free(str);
-			str = valid;
+			continue ;
 		}
-		
-		//parse_string(str); //probably need to add structure with cmds
-			// return (not_valid_string());
-		// else
 		if (ft_strlen(str) == 0)
 			continue ;
-		// split = parsing_str(str, envp);
 		launch_cmd(parse(str), envp);
-		// free_line_all(&line, str);
 	}
 	return (0);
 }
