@@ -6,22 +6,25 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 14:33:00 by hardella          #+#    #+#             */
-/*   Updated: 2022/02/26 18:32:12 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/04 13:28:01 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_bonus_helper(int fd2, char **argv, int argc, char **envp)
+void	ft_bonus_helper(int fd1, int fd2, char **cmds, char **envp)
 {
 	pid_t	waitall;
+	int		len;
 
+	len = len_cmds(cmds);
 	dup2(fd2, 1);
+	dup2(fd1, 0);
 	waitall = fork();
 	if (!waitall)
-		ft_execute(argv[argc - 2], envp);
+		ft_execute(cmds[len - 1], envp);
 	else
-		while (argc-- - 4)
+		while (len--)
 			waitpid(waitall, NULL, 0);
 }
 

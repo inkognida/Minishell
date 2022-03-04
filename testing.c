@@ -40,6 +40,21 @@ void quotes(void)
 }
 
 
+char	**parse(char *valid_str)
+{
+	char	**cmds;
+	int		i;
+
+	i = 0;
+	cmds = ft_split(valid_str, '|');
+	if (cmds == NULL)
+		return (NULL);
+	while (cmds[i])
+		printf("%s\n", cmds[i++]);
+	return (cmds);
+}
+
+
 int main(void)
 {
 	signal(SIGINT, handle_signal);

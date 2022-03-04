@@ -6,7 +6,7 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/03 20:06:24 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/04 14:14:35 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,18 @@ char	*valid_string(char *str)
 	return (valid_str);
 }
 
-int	launch_cmd(char *cmd, char **envp)
+int	launch_cmd(char **cmds, char **envp)
 {
 	pid_t	pid;
 
 	pid = fork();
 	if (pid == 0)
-		ft_execute(cmd, envp);
+		// ft_execute(cmds[0], envp);
+		pipex(cmds, envp);
 	else if (pid < 0)
    		ft_puterror();
 	else
-	{
 		waitpid(pid, 0, WUNTRACED);
-	}
 	return (1);
 }
 
@@ -104,16 +103,29 @@ void	cut_cmd(char **split)
 	exit(1);
 }
 
+char	**parse(char *valid_str)
+{
+	char	**cmds;
+	int		i;
+
+	i = 0;
+	cmds = ft_split(valid_str, '|');
+	if (cmds == NULL)
+		return (NULL);
+	return (cmds);
+}
+
 // void	parsing_str(char *str)
 // {
-// 	char **cmds;
 
-// 	cmds = ft_split(str, ' ');
-// 	if (cmds == NULL)
-// 		return ; //need to free all
-	
-	
 // }
+
+//ft_execute("ls -l - a")
+//pipex(["ls -l - a", "ls", "pwd"])
+	// inside pipex (ft_execute("ls -l -a"))
+	 // ft_execute("ls")
+	 	// ft_execute("pwd")
+
 
 
 int	main(int argc, char **argv, char **envp)
@@ -142,13 +154,14 @@ int	main(int argc, char **argv, char **envp)
 			free(str);
 			str = valid;
 		}
+		
 		//parse_string(str); //probably need to add structure with cmds
 			// return (not_valid_string());
 		// else
 		if (ft_strlen(str) == 0)
 			continue ;
 		// split = parsing_str(str, envp);
-		launch_cmd(str, envp);
+		launch_cmd(parse(str), envp);
 		// free_line_all(&line, str);
 	}
 	return (0);
