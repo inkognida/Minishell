@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/04 14:25:37 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/04 21:05:40 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*valid_string(char *str)
 	return (valid_str);
 }
 
-char	**split_args(char *str)
+char	**split_args(char *str, char delim)
 {
 	char	*valid;
 	char	**args;
@@ -69,43 +69,52 @@ char	**split_args(char *str)
 	int		j;
 
 	i = -1;
-	while (str[++i])
+	valid = ft_strdup(str);
+	while (valid[++i])
 	{
-		if (str[i] == '\'')
-			while (str[++i] != '\'' && str[i])
-				if (str[i] == ' ')
-					str[i] = -1;
-		if (str[i] == '"')
+		if (valid[i] == '\'')
+			while (valid[++i] != '\'' && valid[i])
+				if (valid[i] == delim)
+					valid[i] = -1;
+		if (valid[i] == '"')
 		{
-			while (str[++i] != '"' && str[i])
-				if (str[i] == ' ')
-					str[i] = -1;
+			while (valid[++i] != '"' && valid[i])
+				if (valid[i] == delim)
+					valid[i] = -1;
 		}
 	}
-	valid = valid_string(str);
-	args = ft_split(valid, ' ');
+	valid = valid_string(valid);
+	args = ft_split(valid, delim);
+	free(valid);
 	i = -1;
 	while (args[++i])
 	{
 		j = -1;
 		while (args[i][++j])
 			if (args[i][j] == -1)
-				args[i][j] = ' ';
+				args[i][j] = delim;
 	}
 	return (args);
 }
 
-int	launch_cmd(char *cmd, char **args, char **envp)
+int	launch_cmd(char *cmd, char **envp)
 {
 	pid_t	pid;
 
+	
+	if (redirect_output(&cmd, envp))
+		return (0);
 	pid = fork();
 	if (pid == 0)
-		ft_execute(cmd, args, envp);
+	{
+		redirect_input(&cmd);
+		ft_execute(cmd, envp);
+	}
 	else if (pid < 0)
    		ft_puterror();
 	else
 	{
+
 		waitpid(pid, 0, WUNTRACED);
 	}
 	return (1);
@@ -151,7 +160,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
 	char	*valid;
-	char	**args;
 
 	(void)argc;
 	(void)argv;
@@ -173,14 +181,13 @@ int	main(int argc, char **argv, char **envp)
 			free(str);
 			continue ;
 		}
+		free(valid);
 		//parse_string(str); //probably need to add structure with cmds
 			// return (not_valid_string());
 		// else
 		if (ft_strlen(str) == 0)
 			continue ;
-		args = split_args(str);
-
-		launch_cmd(str, args, envp);
+		launch_cmd(str, envp);
 		// free_line_all(&line, str);
 	}
 	return (0);

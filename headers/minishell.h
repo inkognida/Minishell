@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:15:09 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/03 19:11:54 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/04 20:53:30 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,11 @@ typedef struct s_cmd
 	int		flag;
 	t_cmd	*next;
 }				t_cmd;
+
+char	**split_args(char *str, char delim);
+void	redirect_input(char	**cmd);
+int		redirect_output(char **cmd, char **envp);
+char	*trim_free(char *str, char *charset);
+void	handle_signal(int sig);
 
 #endif

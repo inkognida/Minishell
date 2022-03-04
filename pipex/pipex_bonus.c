@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/04 13:46:12 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/04 16:09:42 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ int	ft_open(char *filename, int flag)
 		return (open(filename, O_CREAT | O_RDWR | O_TRUNC, 0777));
 }
 
-void	ft_execute(char *cmd1, char **args, char **envp)
+void	ft_execute(char *cmd, char **envp)
 {
-	char	**cmds;
+	char	**args;
 
+	args = split_args(cmd, ' ');
 	if (!(envp))
 		ft_puterror();
 	if (ft_strnstr(args[0], "/", ft_strlen(args[0])))
@@ -54,7 +55,7 @@ void	ft_chpar(char *cmd, char **envp)
 	{
 		close(files[0]);
 		dup2(files[1], 1);
-		// ft_execute(cmd, envp);  чето сделать!!!
+		ft_execute(cmd, envp);
 	}
 	else
 	{
