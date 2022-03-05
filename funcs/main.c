@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/04 21:48:07 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/05 19:19:47 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,15 @@ int	launch_cmd(char **cmd, char **envp)
 		pid = fork();
 		if (pid == 0)
 		{
-			if (len_cmds(cmd) > 1)
+			if (arr_len(cmd) > 1)
 				pipex(cmd, envp);
 			else
+			{
+				if (redirect_output(cmd, envp))
+					return (0);
+				redirect_input(cmd);
 				ft_execute(cmd[0], envp);
+			}
 		}
 		else if (pid < 0)
 			ft_puterror();

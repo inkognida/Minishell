@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:15:09 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/04 21:28:07 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/05 18:18:10 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,8 @@ int		redirect_output(char **cmd, char **envp);
 char	*trim_free(char *str, char *charset);
 void	handle_signal(int sig);
 void	exe(char *cmd, char **envp);
+char	**output_files(char **cmd);
+char	**copy_arr(char	**arr);
+int		arr_len(char **cmds);
 
 #endif
