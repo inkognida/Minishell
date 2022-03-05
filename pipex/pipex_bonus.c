@@ -3,38 +3,88 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/04 21:50:20 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/05 17:33:54 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	ft_open(char *filename, int flag)
+// int	ft_open(char *filename, int flag)
+// {
+// 	if (flag == 0)
+// 	{
+// 		if (access(filename, F_OK))
+// 			ft_puterror();
+// 		return (open(filename, O_RDONLY, 0777));
+// 	}
+// 	else
+// 		return (open(filename, O_CREAT | O_RDWR | O_TRUNC, 0777));
+// }
+
+
+int	own_cmds(char **cmds)
 {
-	if (flag == 0)
-	{
-		if (access(filename, F_OK))
-			ft_puterror();
-		return (open(filename, O_RDONLY, 0777));
-	}
-	else
-		return (open(filename, O_CREAT | O_RDWR | O_TRUNC, 0777));
+	if (cmds == NULL)
+		return (0);
+	// else if (ft_strncmp(cmds[0], "echo", ft_strlen(cmds[0])) == 0)
+	// 	return (1);
+	else if (ft_strncmp(cmds[0], "cd", ft_strlen("cd")+1) == 0)
+		return (1);
+	else if (ft_strncmp(cmds[0], "pwd", ft_strlen("pwd")+1) == 0)
+		return (1);
+	//need to add all
+	return (0);
+}
+
+void	go_pwd(char **cmd)
+{
+	char	*pwd;
+
+	if (cmd == NULL || *cmd == NULL)
+		return ; //something to do
+	pwd = getcwd(NULL, 0);
+	if (pwd == NULL)
+		return ; //something to do
+	printf("%s\n", pwd);
+	free(pwd);
+	exit(0);
+	return ;
+}
+
+void	go_cd(char **cmd)
+{
+	if (cmd == NULL || *cmd == NULL)
+		return ; //something to do
+	chdir(cmd[1]);
+	return ;
+}
+
+void	own_execve(char **cmds)
+{
+	if (ft_strncmp(cmds[0], "cd", ft_strlen("cd")+1) == 0)
+		go_cd(cmds);
+	else if (ft_strncmp(cmds[0], "pwd", ft_strlen("pwd")+1) == 0)
+		go_pwd(cmds);
+	//need to add all cmds
+	return ;
 }
 
 void	exe(char *cmd, char **envp)
 {
 	char	**args;
 
-	// printf("%s\n", cmd);
 	args = split_args(ft_strtrim(cmd, " "), ' ');
-	if (args == NULL)
+	if (args == NULL || envp == NULL)
 		exit(1); //free need
-	if (!(envp))
-		ft_puterror();
-	if (ft_strnstr(args[0], "/", ft_strlen(args[0])))
+	else if (own_cmds(args) == 1)
+	{
+		own_execve(args);
+		exit(0); //shit with ctrl + d
+	}
+	else if (ft_strnstr(args[0], "/", ft_strlen(args[0])))
 	{
 		if (execve(args[0], args, envp) == -1)
 			ft_puterror();
@@ -50,9 +100,7 @@ void	ft_execute(char *cmd, char **envp)
 	if (redirect_output(&cmd, envp))
 		return ;
 	else
-	{
 		exe(cmd, envp);
-	}
 }
 
 int	len_cmds(char **cmds)
@@ -107,50 +155,3 @@ void	pipex(char **cmds, char **envp)
 			waitpid(waitall, NULL, 0);
 	exit(0);
 }
-
-
-
-// void	exec_cmds(char *cmd, char **envp)
-// {
-// 	pid_t	parent;
-
-// 	parent = fork();
-// 	if (parent == -1)
-// 		ft_puterror();
-// 	if (parent == 0)
-// 		ft_execute(cmd, envp);
-// 	else
-// 		waitpid(parent, NULL, 0);
-// }
-
-// void	pipex(char **cmds, char **envp)
-// {
-// 	int		fd1;
-// 	int		fd2;
-// 	int		i;
-
-// 	// if (ft_strncmp_pipex(argv[1], "here_doc",
-// 	// 	ft_strlen_pipex(argv[1])) == 0)
-// 	// {
-// 	// 	flag = 3;
-// 	// 	fd2 = ft_open(argv[argc - 1], 1);
-// 	// 	ft_heredoc(argv[2]);
-// 	// }
-// 	// else
-// 	// {
-// 	// 	flag = 2;
-// 	ft_mainelse(&fd1, &fd2);
-// 	// }
-// 	i = 0;
-	
-// 	// printf("%d %s\n", len_cmds(cmds), cmds[0]);
-// 	while (i < len_cmds(cmds))
-// 	{
-// 		ft_chpar(cmds[i++], envp);
-// 		// printf("%s %d\n", cmds[i], len_cmds(cmds));
-// 		// exec_cmds(ft_strtrim(cmds[i++], " \t"), envp);
-// 	}
-// 	ft_bonus_helper(fd2, fd1, cmds, envp); //waitpid handler
-
-// }
-
