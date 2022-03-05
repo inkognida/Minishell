@@ -6,31 +6,30 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 14:33:00 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/04 14:40:32 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/04 21:17:52 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_bonus_helper(int fd2, char **argv, int argc, char **envp)
-{
-	pid_t	waitall;
+// void	ft_bonus_helper(int fd1, int fd2, char **cmds, char **envp)
+// {
+// 	pid_t	waitall;
+// 	int		len;
 
-	dup2(fd2, 1);
-	waitall = fork();
-	if (!waitall)
-		ft_execute(argv[argc - 2], envp);
-	else
-		while (argc-- - 4)
-			waitpid(waitall, NULL, 0);
-}
+// 	len = len_cmds(cmds);
+// 	dup2(fd2, 1);
+// 	dup2(fd1, 0);
+// 	waitall = fork();
+// 	if (!waitall)
+// 		ft_execute(argv[argc - 2], envp);
+// 	else
+// 		while (len--)
+// 			waitpid(waitall, NULL, 0);
+// }
 
-void	ft_mainelse(int *fd1, int *fd2, char **argv, int argc)
+void	ft_mainelse(int *fd1, int *fd2)
 {
-	*fd1 = ft_open(argv[1], 0);
-	*fd2 = ft_open(argv[argc - 1], 1);
-	if (*fd1 < 0 || *fd2 < 0)
-		ft_puterror();
 	dup2(*fd1, 0);
 }
 

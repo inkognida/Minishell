@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/04 21:05:40 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/04 21:48:07 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,25 +97,24 @@ char	**split_args(char *str, char delim)
 	return (args);
 }
 
-int	launch_cmd(char *cmd, char **envp)
+int	launch_cmd(char **cmd, char **envp)
 {
 	pid_t	pid;
 
-	
-	if (redirect_output(&cmd, envp))
-		return (0);
-	pid = fork();
-	if (pid == 0)
+	if (cmd)
 	{
-		redirect_input(&cmd);
-		ft_execute(cmd, envp);
-	}
-	else if (pid < 0)
-   		ft_puterror();
-	else
-	{
-
-		waitpid(pid, 0, WUNTRACED);
+		pid = fork();
+		if (pid == 0)
+		{
+			if (len_cmds(cmd) > 1)
+				pipex(cmd, envp);
+			else
+				ft_execute(cmd[0], envp);
+		}
+		else if (pid < 0)
+			ft_puterror();
+		else
+			waitpid(pid, 0, WUNTRACED);
 	}
 	return (1);
 }
@@ -156,6 +155,31 @@ void	cut_cmd(char **split)
 	exit(1);
 }
 
+char	**parse(char *valid_str)
+{
+	char	**cmds;
+	int		i;
+
+	i = 0;
+	cmds = ft_split(valid_str, '|');
+	if (cmds == NULL)
+		return (NULL);
+	return (cmds);
+}
+
+// void	parsing_str(char *str)
+// {
+
+// }
+
+//ft_execute("ls -l - a")
+//pipex(["ls -l - a", "ls", "pwd"])
+	// inside pipex (ft_execute("ls -l -a"))
+	 // ft_execute("ls")
+	 	// ft_execute("pwd")
+
+
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	*str;
@@ -181,14 +205,9 @@ int	main(int argc, char **argv, char **envp)
 			free(str);
 			continue ;
 		}
-		free(valid);
-		//parse_string(str); //probably need to add structure with cmds
-			// return (not_valid_string());
-		// else
 		if (ft_strlen(str) == 0)
 			continue ;
-		launch_cmd(str, envp);
-		// free_line_all(&line, str);
+		launch_cmd(parse(str), envp);
 	}
 	return (0);
 }

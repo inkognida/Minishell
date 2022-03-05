@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 16:04:57 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/04 21:05:12 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/04 21:29:01 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,7 @@ int	redirect_output(char **cmd, char **envp)
 			redirect_input(cmd);
 			close(1);
 			open(files[i], O_RDWR | O_TRUNC | O_CREAT, 0777);
-			ft_execute(*cmd, envp);
+			exe(*cmd, envp);
 		}
 		else if (pid < 0)
 			ft_puterror();
