@@ -3,30 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 14:33:00 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/04 21:17:52 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/06 20:33:41 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-// void	ft_bonus_helper(int fd1, int fd2, char **cmds, char **envp)
-// {
-// 	pid_t	waitall;
-// 	int		len;
-
-// 	len = len_cmds(cmds);
-// 	dup2(fd2, 1);
-// 	dup2(fd1, 0);
-// 	waitall = fork();
-// 	if (!waitall)
-// 		ft_execute(argv[argc - 2], envp);
-// 	else
-// 		while (len--)
-// 			waitpid(waitall, NULL, 0);
-// }
 
 void	ft_mainelse(int *fd1, int *fd2)
 {

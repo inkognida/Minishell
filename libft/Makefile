@@ -33,8 +33,8 @@ FLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 
-$(NAME): $(OBJ_SRC)
-			ar rc $(NAME) $(OBJ_SRC)
+$(NAME): $(OBJ_SRC) $(OBJ_BONUS)
+			ar rc $(NAME) $(OBJ_SRC) $(OBJ_BONUS)
 			ranlib $(NAME)
 
 %.o:	%.c $(LIBH)

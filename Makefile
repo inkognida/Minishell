@@ -1,5 +1,6 @@
 SRCS	=	./funcs/main.c ./funcs/redirect.c ./funcs/utils.c ./get_next_line/gnl_utils.c ./get_next_line/gnl.c ./pipex/errors_pipex.c \
-			./pipex/ft_split_pipex.c ./pipex/pipex_bonus.c ./pipex/pipex_funcs.c ./pipex/pipex_utils.c \
+			./pipex/ft_split_pipex.c ./pipex/pipex.c ./pipex/pipex_funcs.c ./pipex/pipex_utils.c \
+			./funcs/init_envp.c ./pipex/own_commands.c \
 
 
 OBJ_SRC = 	${SRCS:.c=.o}

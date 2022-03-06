@@ -6,9 +6,10 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/05 17:24:09 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/06 20:43:14 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../headers/minishell.h"
 
@@ -106,10 +107,23 @@ int	launch_cmd(char **cmd, char **envp)
 		pid = fork();
 		if (pid == 0)
 		{
-			if (len_cmds(cmd) > 1)
-				pipex(cmd, envp);
-			else
-				ft_execute(cmd[0], envp);
+			//here should be only pipex(cmd, envp)
+			//only pipex working now, so work_pipex(cmd, envp) here
+			work_pipex(cmd, envp);
+			exit(0);
+
+
+			// old proccess
+				// if (arr_len(cmd) > 1)
+				// 	pipex(cmd, envp);
+				// else
+				// {
+				// 	if (redirect_output(cmd, envp))
+				// 		return (0);
+				// 	redirect_input(cmd);
+				// 	ft_execute(cmd[0], envp);
+				// }
+			//  old proccess 
 		}
 		else if (pid < 0)
 			ft_puterror();
@@ -119,6 +133,8 @@ int	launch_cmd(char **cmd, char **envp)
 	return (1);
 }
 
+
+//func need to be done 
 void	handle_signal(int sig)
 {
 	g_exit_status += 2;
@@ -150,11 +166,6 @@ void	not_valid_string(void)
 	g_exit_status = 2;
 }
 
-void	cut_cmd(char **split)
-{
-	exit(1);
-}
-
 char	**parse(char *valid_str)
 {
 	char	**cmds;
@@ -167,27 +178,27 @@ char	**parse(char *valid_str)
 	return (cmds);
 }
 
-// void	parsing_str(char *str)
-// {
+void display(t_list *env)
+{
+	while (env->next)
+	{
+		printf("%s\n", env->content);
+		break ;
+		env = env->next;
+	}
+}
 
-// }
-
-//ft_execute("ls -l - a")
-//pipex(["ls -l - a", "ls", "pwd"])
-	// inside pipex (ft_execute("ls -l -a"))
-	 // ft_execute("ls")
-	 	// ft_execute("pwd")
-
-
-
+//last (add env)
 int	main(int argc, char **argv, char **envp)
 {
+	t_list	*env;
 	char	*str;
 	char	*valid;
 
 	(void)argc;
 	(void)argv;
-	//init env for what?
+	env = NULL;
+	init_envp(&env, envp);
 	signal(SIGINT, handle_signal);
 	signal(SIGQUIT, SIG_IGN);
 	while (1)

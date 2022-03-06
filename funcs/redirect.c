@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 16:04:57 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/04 21:29:01 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/06 14:10:58 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	copy_file(char	*in_file, int fd_out)
 	trimmed = ft_strtrim(in_file, " <");
 	free(in_file);
 	fd_in = open(trimmed, O_RDONLY);
+	if (fd_in < 0)
+		perror("minishell: ");
 	line = get_next_line(fd_in);
 	while (line)
 	{
@@ -86,8 +88,7 @@ void	redirect_input(char	**cmd)
 	if (flag)
 	{
 		*cmd = trim_free(*cmd, " ");
-		close(0);
-		open("temp_input", O_RDONLY);
+		dup2(open("temp_input", O_RDONLY), 0);
 	}
 }
 
@@ -133,14 +134,14 @@ int	redirect_output(char **cmd, char **envp)
 		if (pid == 0)
 		{
 			redirect_input(cmd);
-			close(1);
-			open(files[i], O_RDWR | O_TRUNC | O_CREAT, 0777);
-			exe(*cmd, envp);
+			dup2(open(files[i], O_RDWR | O_TRUNC | O_CREAT, 0777), 1);
+			ft_execute(*cmd, envp);
 		}
 		else if (pid < 0)
 			ft_puterror();
 		else
-			waitpid(pid, 0, 0);
+			waitpid(pid, NULL, 0);
 	}
+	exit(0);
 	return (1);
 }

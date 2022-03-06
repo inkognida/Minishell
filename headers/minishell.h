@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:15:09 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/04 21:28:07 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/06 20:33:24 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,12 @@ int		redirect_output(char **cmd, char **envp);
 char	*trim_free(char *str, char *charset);
 void	handle_signal(int sig);
 void	exe(char *cmd, char **envp);
+char	**output_files(char **cmd);
+char	**copy_arr(char	**arr);
+int		arr_len(char **cmds);
+
+
+
+void	init_envp(t_list **env, char **envp);
 
 #endif
