@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/07 17:54:43 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/07 20:40:05 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,22 +100,24 @@ char	**split_args(char *str, char delim)
 
 int	launch_cmd(char **cmd, t_list *envp)
 {
-	pid_t	pid;
+	// pid_t	pid;
 
-	if (cmd)
-	{
-		pid = fork();
-		if (pid == 0)
-		{
+	// // ft_execute(cmd[arr_len(cmd) - 1])
+	// if (cmd)
+	// {
+	// 	pid = fork();
+	// 	if (pid == 0)
+	// 	{
 			pipex(cmd, envp);
-			exit(0);
-		}
-		else if (pid < 0)
-			ft_puterror();
-		else
-			waitpid(pid, 0, WUNTRACED);
-	}
-	return (1);
+			return (1);
+	// 		exit(0);
+	// 	}
+	// 	else if (pid < 0)
+	// 		ft_puterror();
+	// 	else
+	// 		waitpid(pid, 0, WUNTRACED);
+	// }
+	// return (1);
 }
 
 
@@ -161,21 +163,6 @@ char	**parse(char *valid_str)
 	if (cmds == NULL)
 		return (NULL);
 	return (cmds);
-}
-
-
-//display functions
-
-void display(t_list *env)
-{
-	while (env->next)
-	{
-		if (ft_strncmp(env->content, "PWD", 3) == 0)
-			printf("%s\n", env->content);
-		else if (ft_strncmp(env->content, "OLDPWD", 6) == 0)
-			printf("%s\n", env->content);
-		env = env->next;
-	}
 }
 
 void display_arr(char **envp)

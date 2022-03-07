@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/07 17:13:20 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/07 20:40:35 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ void	pipex(char **cmds, t_list *envp)
 		ft_pipe(cmds_copy, envp, files[i]);
 		free(cmds_copy);
 	}
-	exit(0);
+	// exit(0);
 }
 
 

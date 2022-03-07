@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:02:21 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/07 17:58:53 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/07 20:10:42 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,41 +26,76 @@ int	own_cmds(char *cmd)
 	return (0);
 }
 
-void	go_pwd(char **args, t_list *env)
+int ft_pwd(char **args, t_list *env)
 {
-	char	*pwd;
+	char pwd[PATH_MAX];
 
-	if (args == NULL || *args == NULL || env == NULL)
-		return ; //should be exit(code)
-	pwd = getcwd(NULL, 0);
-	if (pwd == NULL)
-		return ; //should be exit(code)
+	if (args[1] != NULL)
+	{
+		ft_putstr_fd("too many arguments\n", 2);
+		return (1);
+	}
+	if (env == NULL)
+		return (1);
+	if (getcwd(pwd, PATH_MAX) == NULL)
+		return (1);
 	printf("%s\n", pwd);
-	
+	return (0);
 }
 
-void	go_cd(char **args, t_list **env)
+int	ft_cd_home(t_list **env, char *path)
 {
-	int	i;
+	char	*old;
+	char	*new;
+	int		new_len;
+	char	buf[1000];
 
-	i = 0;
-	if (args == NULL || *args == NULL || env == NULL)
-		return ; //something to do
-	if (!args[1])
-		return ; //something to do
-	while (env[i] != NULL)
+	old = env_find("PWD", *env);
+	if (path == NULL)
+		new = env_find("HOME", *env);
+	else
 	{
-		if ()
+		new_len = ft_strlen(env_find("HOME", *env)) + ft_strlen(path) + 1;
+		new = malloc(new_len);
+		ft_strlcat(new, env_find("HOME", *env), new_len);
+		ft_strlcat(new, path + 1, new_len);
 	}
-	return ;
+	if (chdir(new) == -1)
+		perror("hz");
+	printf("%d\n", chdir(new));
+	env_edit("OLDPWD", old, env);
+	env_edit("PWD", new, env);
+	printf("new %s %s\n", new, env_find("PWD", *env));
+	getcwd(buf,1000);
+	printf("safdasdf %s\n", buf);
+	ft_pwd(NULL, *env);
+	if (path != NULL)
+		free(new);
+	return (0);
+}
+
+int	ft_cd(char **args, t_list **env)
+{
+	char	*temp;
+
+	if (args == NULL || *args == NULL || env == NULL)
+		return (1); //something to do
+	if (arr_len(args) > 3)
+		ft_error("cd", "too many arguments", 1);
+	if (arr_len(args) == 2 && args[1][0] == '~')
+		return (ft_cd_home(env, args[1]));
+	if (arr_len(args) == 1)
+		return (ft_cd_home(env, NULL));
+	return (0);
 }
 
 int	own_execve(char *exec_cmd, char **args, t_list *envp)
 {
-	if (ft_strncmp(exec_cmd, "cd", ft_strlen("cd") + 1) == 0)
-		go_cd(args, &envp);
-	else if (ft_strncmp(exec_cmd, "pwd", ft_strlen("pwd") + 1) == 0)
-		go_pwd(args, envp);
+	if (ft_strncmp(exec_cmd, "cd", ft_strlen(exec_cmd)) == 0)
+		ft_cd(args, &envp);
+	else if (ft_strncmp(exec_cmd, "pwd", ft_strlen(exec_cmd)) == 0)
+		ft_pwd(args, envp);
 	//need to add all cmds
-	return (-1);
+	else
+		return (-1);
 }
