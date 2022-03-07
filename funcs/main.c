@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/07 17:13:06 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/07 17:54:43 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,24 +196,6 @@ void display_arr(char **envp)
 }
 
 // display functions
-
-char	**convert_list_to_arr(t_list *lst)
-{
-	char	**strs;
-	int		i;
-	int		len;
-
-	i = 0;
-	len = ft_lstsize(lst);
-	strs = ft_calloc(len + 1, sizeof(char *));
-	while (i < len)
-	{
-		strs[i] = (char *)lst->content;
-		lst = lst->next;
-		i++;
-	}
-	return (strs);
-}
 
 int	main(int argc, char **argv, char **envp)
 {
