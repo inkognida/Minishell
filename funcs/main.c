@@ -6,7 +6,7 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/06 20:43:14 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/07 17:13:06 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	**split_args(char *str, char delim)
 	return (args);
 }
 
-int	launch_cmd(char **cmd, char **envp)
+int	launch_cmd(char **cmd, t_list *envp)
 {
 	pid_t	pid;
 
@@ -107,23 +107,8 @@ int	launch_cmd(char **cmd, char **envp)
 		pid = fork();
 		if (pid == 0)
 		{
-			//here should be only pipex(cmd, envp)
-			//only pipex working now, so work_pipex(cmd, envp) here
-			work_pipex(cmd, envp);
+			pipex(cmd, envp);
 			exit(0);
-
-
-			// old proccess
-				// if (arr_len(cmd) > 1)
-				// 	pipex(cmd, envp);
-				// else
-				// {
-				// 	if (redirect_output(cmd, envp))
-				// 		return (0);
-				// 	redirect_input(cmd);
-				// 	ft_execute(cmd[0], envp);
-				// }
-			//  old proccess 
 		}
 		else if (pid < 0)
 			ft_puterror();
@@ -178,22 +163,65 @@ char	**parse(char *valid_str)
 	return (cmds);
 }
 
+
+//display functions
+
 void display(t_list *env)
 {
 	while (env->next)
 	{
-		printf("%s\n", env->content);
-		break ;
+		if (ft_strncmp(env->content, "PWD", 3) == 0)
+			printf("%s\n", env->content);
+		else if (ft_strncmp(env->content, "OLDPWD", 6) == 0)
+			printf("%s\n", env->content);
 		env = env->next;
 	}
 }
 
-//last (add env)
+void display_arr(char **envp)
+{
+	int i = 0;
+	int j;
+	while (envp[i])
+	{
+		j = 0;
+		while (envp[i][j])
+		{
+			printf("%c", envp[i][j]);
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
+}
+
+// display functions
+
+char	**convert_list_to_arr(t_list *lst)
+{
+	char	**strs;
+	int		i;
+	int		len;
+
+	i = 0;
+	len = ft_lstsize(lst);
+	strs = ft_calloc(len + 1, sizeof(char *));
+	while (i < len)
+	{
+		strs[i] = (char *)lst->content;
+		lst = lst->next;
+		i++;
+	}
+	return (strs);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_list	*env;
 	char	*str;
 	char	*valid;
+
+	// char **back_env;
 
 	(void)argc;
 	(void)argv;
@@ -218,7 +246,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (ft_strlen(str) == 0)
 			continue ;
-		launch_cmd(parse(str), envp);
+		launch_cmd(parse(str), env);
 	}
 	return (0);
 }

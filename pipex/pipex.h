@@ -6,7 +6,7 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 21:04:44 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/06 19:54:27 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/07 15:45:28 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <stdlib.h>
+# include "../headers/minishell.h"
 
 typedef struct s_pipex
 {
@@ -42,13 +43,13 @@ void		ft_bonuserror(void);
 void		ft_putmallocerror(char *str);
 void		ft_puterror(void);
 int			ft_strlen_pipex(const char *s);
-void		ft_execute(char *cmd, char **envp);
+void		ft_execute(char *cmd, t_list *env);
 int			ft_open(char *filename, int flag);
 void		ft_heredoc(char *limiter);
-void		ft_chpar(char *cmd, char **envp);
-void		pipex(char **cmds, char **envp);
+void		ft_chpar(char *cmd, t_list *env);
+void		pipex(char **cmds, t_list *env);
 int			len_cmds(char **cmds);
 
-void		work_pipex(char **cmds, char **envp);
+void		work_pipex(char **cmds, t_list *env);
 
 #endif

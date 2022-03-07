@@ -6,7 +6,7 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:15:09 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/06 20:33:24 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/07 15:45:36 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@ int		arr_len(char **cmds);
 
 
 
+char	**convert_list_to_arr(t_list *env);
 void	init_envp(t_list **env, char **envp);
+void display(t_list *env);
+void display_arr(char **envp);
+
+int	own_execve(char *exec_cmd, char **args, t_list *envp);
+int	own_cmds(char *cmd);
 
 #endif

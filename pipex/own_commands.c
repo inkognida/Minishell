@@ -6,56 +6,63 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:02:21 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/06 20:34:46 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/07 17:17:29 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../headers/minishell.h"
 
-int	own_cmds(char **cmds)
+int	own_cmds(char *cmd)
 {
-	if (cmds == NULL)
+	if (cmd == NULL)
 		return (0);
 	// else if (ft_strncmp(cmds[0], "echo", ft_strlen(cmds[0])) == 0)
 	// 	return (1);
-	else if (ft_strncmp(cmds[0], "cd", ft_strlen("cd")+1) == 0)
+	else if (ft_strncmp(cmd, "cd", ft_strlen("cd")+1) == 0)
 		return (1);
-	else if (ft_strncmp(cmds[0], "pwd", ft_strlen("pwd")+1) == 0)
+	else if (ft_strncmp(cmd, "pwd", ft_strlen("pwd")+1) == 0)
 		return (1);
 	//need to add all
 	return (0);
 }
 
-void	go_pwd(char **cmd)
+void	go_pwd(char *exec_cmd, char **args, t_list *env)
 {
 	char	*pwd;
 
-	if (cmd == NULL || *cmd == NULL)
-		return ; //something to do
+	if (exec_cmd == NULL || args == NULL || *args == NULL || envp == NULL)
+		return ; //should be exit(code)
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
-		return ; //something to do
+		return ; //should be exit(code)
 	printf("%s\n", pwd);
-	free(pwd);
-	exit(0);
-	return ;
+	
 }
 
-void	go_cd(char **cmd)
+void	go_cd(char *exec_cmd, char **args, t_list **env)
 {
-	if (cmd == NULL || *cmd == NULL)
+	int	i;
+
+	i = 0;
+	if (exec_cmd == NULL || args == NULL || *args == NULL || envp == NULL)
 		return ; //something to do
-	chdir(cmd[1]);
+	if (!args[1])
+		return ; //something to do
+	while (env[i] != NULL)
+	{
+		if ()
+	
+	}
 	return ;
 }
 
-void	own_execve(char **cmds)
+int	own_execve(char *exec_cmd, char **args, t_list *envp)
 {
-	if (ft_strncmp(cmds[0], "cd", ft_strlen("cd")+1) == 0)
-		go_cd(cmds);
-	else if (ft_strncmp(cmds[0], "pwd", ft_strlen("pwd")+1) == 0)
-		go_pwd(cmds);
+	if (ft_strncmp(exec_cmd, "cd", ft_strlen("cd")+1) == 0)
+		go_cd(exec_cmd, args, &envp);
+	else if (ft_strncmp(exec_cmd, "pwd", ft_strlen("pwd")+1) == 0)
+		go_pwd(exec_cmd, args, envp);
 	//need to add all cmds
-	return ;
+	return (-1);
 }

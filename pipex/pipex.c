@@ -6,33 +6,39 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/06 20:04:25 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/07 17:13:20 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../headers/minishell.h"
 
-
-void	ft_execute(char *cmd, char **envp)
+void	ft_execute(char *cmd, t_list *envp)
 {
 	char	**args;
-
+	char	**env = convert_list_to_arr(envp);
 	args = split_args(ft_strtrim(cmd, " "), ' ');
 	if (args == NULL || envp == NULL)
 		exit(1); //fix that exit (maybe (free()) need)
 	else if (ft_strnstr(args[0], "/", ft_strlen(args[0])))
 	{
-		if (execve(args[0], args, envp) == -1)
+		if (execve(args[0], args, env) == -1)
 			ft_puterror();
+	}
+	else if (own_cmds(args[0]) == 1)
+	{
+		if (own_execve(args[0], args, envp) == -1)
+			ft_puterror();
+		exit(0); //end proccess
 	}
 	else
 	{
-		if (execve(ft_findpath(args[0], envp), args, envp) == -1)
+		if (execve(ft_findpath(args[0], env), args, env) == -1)
 			ft_puterror();
 	}
 }
 
-void	ft_pipe(char **cmds, char **envp, char *file)
+void	ft_pipe(char **cmds, t_list *envp, char *file)
 {
 	pid_t	pid;
 
@@ -65,7 +71,7 @@ void	init_prc(t_pipex *prc, char **cmds)
 	prc->len = arr_len(cmds);
 }
 
-void	child(t_pipex *prc, char **cmds, char **envp)
+void	child(t_pipex *prc, char **cmds, t_list *envp)
 {
 	if (prc->i > 0)
 	{
@@ -81,7 +87,7 @@ void	child(t_pipex *prc, char **cmds, char **envp)
 	ft_execute(cmds[prc->i], envp);
 }
 
-void	work_pipex(char **cmds, char **envp)
+void	work_pipex(char **cmds, t_list *envp)
 {
 	t_pipex	prc;
 
@@ -112,7 +118,7 @@ void	work_pipex(char **cmds, char **envp)
 
 
 //should include work_pipex here
-void	pipex(char **cmds, char **envp)
+void	pipex(char **cmds, t_list *envp)
 {
 	int		i;
 	int 	len;
