@@ -6,10 +6,9 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/07 20:40:35 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/08 22:34:11 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../headers/minishell.h"
 
@@ -116,9 +115,26 @@ void	work_pipex(char **cmds, t_list *envp)
 }
 // end of out ideal pipex
 
+int	try_builtins(char **cmds, t_list *env)
+{
+	char 	*trimmed;
+	int 	len;
+	char	**args;
+	
+	len = arr_len(cmds);
+	args = split_args(cmds[len - 1], ' ');
+	if (ft_strncmp(args[0], "cd", 3) == 0)
+	{
+		ft_cd(args, &env);
+		return (1);
+	}
+	if (ft_strncmp(args[0], "exit", 5) == 0)
+		ft_exit(args, env);
+	return (0);
+}
 
 //should include work_pipex here
-void	pipex(char **cmds, t_list *envp)
+void	pipex(char **cmds, t_list *env)
 {
 	int		i;
 	int 	len;
@@ -128,17 +144,22 @@ void	pipex(char **cmds, t_list *envp)
 	i = -1;
 	len = arr_len(cmds);
 	files = output_files(&(cmds[len - 1]));
+	while (files[++i])
+		close(open(files[i], O_RDWR | O_TRUNC | O_CREAT, 0777));
+	if (try_builtins(cmds, env))
+		return ;
 	if (files[0] == NULL)
 	{
 		redirect_input(&(cmds[0]));
-		ft_pipe(cmds, envp, NULL);
+		ft_pipe(cmds, env, NULL);
 	}
+	i = -1;
 	while (files[++i])
 	{
 		printf("%s\n", files[i]);
 		cmds_copy = copy_arr(cmds);
 		redirect_input(&(cmds_copy[0]));
-		ft_pipe(cmds_copy, envp, files[i]);
+		ft_pipe(cmds_copy, env, files[i]);
 		free(cmds_copy);
 	}
 	// exit(0);

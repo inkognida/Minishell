@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:06:18 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/07 17:52:08 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/08 22:32:07 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	env_edit(char *key, char *value, t_list **env)
 		{
 			new_len = ft_strlen(key) + ft_strlen(value) + 2;
 			new = malloc(new_len);
+			new[0] = 0;
 			ft_strlcat(new, key, new_len);
 			ft_strlcat(new, "=", new_len);
 			ft_strlcat(new, value, new_len);

@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:15:09 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/07 19:58:59 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/08 23:00:53 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,10 @@ void	init_envp(t_list **env, char **envp);
 void	display(t_list *env);
 void	display_arr(char **envp);
 
-int		own_execve(char *exec_cmd, char **args, t_list *envp);
+int		own_execve(char *exec_cmd, char **args, t_list *env);
 int		own_cmds(char *cmd);
+int		ft_cd(char **args, t_list **env);
+int		is_builtin(char *cmd);
+void	ft_exit(char **args, t_list **env);
 
 #endif

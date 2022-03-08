@@ -6,107 +6,59 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:58:08 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/04 17:39:15 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/08 20:02:09 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static	int	check_char(char c, char const *b)
+static int	in_arr(char const *arr, char c)
 {
-	int	i;
+	size_t	i;
 
-	i = 0;
-	while (b[i])
-	{
-		if (c == b[i])
+	i = -1;
+	while (++i < ft_strlen(arr))
+		if (arr[i] == c)
 			return (1);
-		i++;
-	}
 	return (0);
 }
 
-static int	f_pos(char const *s, char const *set)
+static int	count_to_trim(char const *s1, char const *set)
 {
-	int	i;
+	size_t	i;
+	int		count;
 
 	i = 0;
-	while (check_char(s[i], set) == 1 && s[i])
+	count = 0;
+	while (in_arr(set, s1[i]) && i < ft_strlen(s1))
 		i++;
-	return (i);
-}
-
-static int	l_pos(char const *s, char const *set)
-{
-	int	i;
-	int	j;
-
-	j = 0;
-	i = 0;
-	while (s[i])
-		i++;
-	i--;
-	while (check_char(s[i], set) == 1 && s[j])
-	{
-		j++;
-		i--;
-	}
-	return (i);
-}
-
-static char	*cut_strtrim(char const *s1, char const *set)
-{
-	char	*r;
-	int		i;
-	int		f_s;
-	int		l_s;
-
-	i = 0;
-	l_s = l_pos(s1, set);
-	f_s = f_pos(s1, set);
-	if (l_s == f_s)
-	{
-		r = (char *)malloc(sizeof(char) * 2);
-		r[i] = s1[l_s];
-		r[++i] = '\0';
-		return (r);
-	}
-	r = (char *)malloc(sizeof(char) * (l_pos(s1, set) - f_pos(s1, set) + 2));
-	if (r == NULL)
-		return (NULL);
-	while (i < (l_pos(s1, set) - f_pos(s1, set) + 1))
-	{
-		r[i++] = s1[f_s];
-		f_s++;
-	}
-	r[i] = '\0';
-	return (r);
+	count = i;
+	if (i == ft_strlen(s1))
+		return (count);
+	i = ft_strlen(s1);
+	while (in_arr(set, s1[--i]))
+		count++;
+	return (count);
 }
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	char				*r;
-	int					i;
-	int					j;
-	unsigned int		c;
+	char	*res;
+	size_t	i;
+	size_t	count;
 
-	if (!(s1) || !(set))
+	if (s1 == NULL || set == NULL)
 		return (NULL);
-	i = -1;
-	c = 0;
-	while (s1[++i])
-	{
-		j = -1;
-		while (set[++j])
-			if (set[j] == s1[i])
-				c++;
-	}
-	if (c == ft_strlen(s1))
-	{
-		r = (char *)malloc(sizeof(char) * 1);
-		r[0] = '\0';
-		return (r);
-	}
-	r = cut_strtrim(s1, set);
-	return (r);
+	res = malloc(ft_strlen(s1) - count_to_trim(s1, set) + 1);
+	if (!res)
+		return (NULL);
+	i = 0;
+	while (in_arr(set, s1[i]))
+		i++;
+	count = i;
+	while (i < ft_strlen(s1) - (count_to_trim(s1, set) - count))
+		*res++ = s1[i++];
+	*res = '\0';
+	res -= (ft_strlen(s1) - count_to_trim(s1, set));
+	return (res);
 }
