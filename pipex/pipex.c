@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/17 14:11:48 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/17 15:54:00 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int	try_builtins(char **cmds, t_list *env)
 		ft_exit(args, &env);
 	if (ft_strncmp(args[0], "export", 7) == 0)
 		return (ft_export(args, &env));
-	return (1);
+	return (-1);
 }
 
 //should include work_pipex here
@@ -145,7 +145,7 @@ void	pipex(char **cmds, t_list *env)
 	files = output_files(&(cmds[len - 1]));
 	while (files[++i])
 		close(open(files[i], O_RDWR | O_TRUNC | O_CREAT, 0777));
-	if (try_builtins(cmds, env) == 0)
+	if (try_builtins(cmds, env) != -1)
 		return ;
 	if (files[0] == NULL)
 	{

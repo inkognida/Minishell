@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:06:18 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/08 22:32:07 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/17 14:56:10 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	**convert_list_to_arr(t_list *lst)
 	strs = ft_calloc(len + 1, sizeof(char *));
 	while (i < len)
 	{
-		strs[i] = (char *)lst->content;
+		strs[i] = ft_strdup((char *)lst->content);
 		lst = lst->next;
 		i++;
 	}

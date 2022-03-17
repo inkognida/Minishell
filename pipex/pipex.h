@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/04 21:04:44 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/17 14:10:33 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/17 15:48:59 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void		ft_mainelse(int *fd1, int *fd2);
 void		ft_bonuserror(void);
 void		ft_putmallocerror(char *str);
 void		ft_puterror(void);
-void		ft_error(char *from, char *message, int exit_flag);
-void		ft_error_file(char *from, char *file, char *message, int exit_flag);
+int			ft_error(char *from, char *message, int exit_flag);
+int			ft_error_file(char *from, char *file, char *message, int exit_flag);
 int			ft_strlen_pipex(const char *s);
 void		ft_execute(char *cmd, t_list *env);
 int			ft_open(char *filename, int flag);

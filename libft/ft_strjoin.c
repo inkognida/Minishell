@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:57:34 by hardella          #+#    #+#             */
-/*   Updated: 2021/10/13 12:34:12 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/17 14:46:56 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,16 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		r[k + i] = s2[i];
 	r[k + i] = '\0';
 	return (r);
+}
+
+char	*ft_strjoin_free(char *s1, char *s2, int f1, int f2)
+{
+	char	*res;
+
+	res = ft_strjoin(s1, s2);
+	if (f1)
+		free(s1);
+	if (f2)
+		free(s2);
+	return (res);
 }

@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:02:21 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/17 14:30:25 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/17 15:54:12 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,16 @@ void	ft_exit(char **args, t_list **env)
 	exit(status);
 }
 
+void	free_arr(char **arr)
+{
+	int	i;
+
+	i = -1;
+	while (arr[++i])
+		free(arr[i]);
+	free(arr);
+}
+
 void	print_env(char **arr)
 {
 	int		i;
@@ -113,6 +123,8 @@ void	print_env(char **arr)
 	while (arr[++i])
 	{
 		val = ft_strchr(arr[i], '=');
+		// if (val == NULL)
+		// 	val = "";
 		write(1, arr[i], ft_strlen(arr[i]) - ft_strlen(val));
 		if (ft_strchr(val + 1, '=') || ft_strlen(val) == 1)
 			printf("='%s'\n", val + 1);
@@ -157,23 +169,35 @@ int	ft_export(char **args, t_list **env)
 	t_list	*new;
 
 	if (args[1] == NULL)
+	{
+		free_arr(args);
 		return(ft_export_show(*env));
+	}
 	i = 0;
 	while (args[++i])
 	{
+		if (ft_strncmp(args[i], "=", 2) == 0)
+			return (ft_error("minishell", "bad assignment", -1));
+		if (ft_strrchr(args[i], '=') == NULL)
+			args[i] = ft_strjoin_free(args[i], "=", 1, 0);
 		if (args[i][0] == '=')
-			ft_error_file("minishell", args[i] + 1, "not found", -1);
+			return (ft_error_file("minishell", args[i] + 1, "not found", -1));
 		k_v = ft_split(args[i], '=');
+		if (k_v[1] == NULL)
+			k_v[1] = "";
 		if (ft_isdigit(k_v[0][0]))
-			ft_error_file("export", "not an identifier", k_v[0], -1);
-		new = ft_lstnew(args[i]);
-		if (new == NULL)
-			ft_error("export", "malloc error", -1);
+			return (ft_error_file("export", "not an identifier", k_v[0], -1));
 		if (env_find(k_v[0], *env))
-			env_edit(k_v[0], k_v[1], env);
+			env_edit(k_v[0], args[i] + ft_strlen(k_v[0]) + 1, env);
 		else
+		{
+			new = ft_lstnew(args[i]);
+			if (new == NULL)
+				ft_error("export", "malloc error", -1);
 			ft_lstadd_back(env, new);
+		}
 	}
+	// free_arr(args);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 20:20:59 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/17 13:51:11 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/17 15:48:24 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_bonuserror(void)
 	exit(1);
 }
 
-void	ft_error(char *from, char *message, int exit_flag)
+int	ft_error(char *from, char *message, int exit_flag)
 {
 	int	should_exit;
 
@@ -48,9 +48,10 @@ void	ft_error(char *from, char *message, int exit_flag)
 	ft_putstr_fd("\n", 2);
 	if (should_exit)
 		exit(exit_flag);
+	return (exit_flag);
 }
 
-void	ft_error_file(char *from, char *file, char *message, int exit_flag)
+int	ft_error_file(char *from, char *file, char *message, int exit_flag)
 {
 	int	should_exit;
 
@@ -69,4 +70,5 @@ void	ft_error_file(char *from, char *file, char *message, int exit_flag)
 	ft_putstr_fd("\n", 2);
 	if (should_exit)
 		exit(exit_flag);
+	return (exit_flag);
 }
