@@ -6,30 +6,11 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:02:21 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/08 23:35:19 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/17 14:30:25 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
-
-int	own_cmds(char *cmd)
-{
-	if (cmd == NULL)
-		return (0);
-	// else if (ft_strncmp(cmds[0], "echo", ft_strlen(cmds[0])) == 0)
-	// 	return (1);
-	else if (ft_strncmp(cmd, "cd", ft_strlen("cd")+1) == 0)
-		return (1);
-	else if (ft_strncmp(cmd, "pwd", ft_strlen("pwd")+1) == 0)
-		return (1);
-	else if (ft_strncmp(cmd, "env", ft_strlen("env")+1) == 0)
-		return (1);
-	else if (ft_strncmp(cmd, "export", ft_strlen("env")+1) == 0)
-		return (1);
-	else if (ft_strncmp(cmd, "exit", ft_strlen("exit")+1) == 0)
-		return (1);
-	return (0);
-}
 
 int	ft_pwd(char **args, t_list *env)
 {
@@ -75,7 +56,6 @@ int	ft_cd_home(t_list **env, char *path)
 
 int	ft_cd(char **args, t_list **env)
 {
-	char	*temp;
 	char	*old;
 	char	*new;
 
@@ -111,6 +91,7 @@ int	ft_env(t_list *env, char **args)
 		printf("%s\n", env->content);
 		env = env->next;
 	}
+	return (0);
 }
 
 void	ft_exit(char **args, t_list **env)
@@ -123,7 +104,23 @@ void	ft_exit(char **args, t_list **env)
 	exit(status);
 }
 
-//export
+void	print_env(char **arr)
+{
+	int		i;
+	char	*val;
+
+	i = -1;
+	while (arr[++i])
+	{
+		val = ft_strchr(arr[i], '=');
+		write(1, arr[i], ft_strlen(arr[i]) - ft_strlen(val));
+		if (ft_strchr(val + 1, '=') || ft_strlen(val) == 1)
+			printf("='%s'\n", val + 1);
+		else
+			printf("%s\n", val);
+	}
+	free(arr);
+}
 
 int	ft_export_show(t_list *env)
 {
@@ -149,44 +146,65 @@ int	ft_export_show(t_list *env)
 		}
 		i++;
 	}
-	i = -1;
-	while (arr[++i])
-		printf("%s\n", arr[i]);
+	print_env(arr);
 	return (0);
-}
-
-int	is_valid_for_export(char **k_v)
-{
-	int	i;
-	int	flag;
-	
-	i = -1;
-	while (k_v[0][++i])
-		if (ft_isdigit(k_v[0][i]) == 1)
-			return (-1);
-	if (ft_strlen(k_v[1]))
-		return (-2);
-	return (1);
 }
 
 int	ft_export(char **args, t_list **env)
 {
 	int		i;
 	char	**k_v;
+	t_list	*new;
 
 	if (args[1] == NULL)
 		return(ft_export_show(*env));
+	i = 0;
+	while (args[++i])
+	{
+		if (args[i][0] == '=')
+			ft_error_file("minishell", args[i] + 1, "not found", -1);
+		k_v = ft_split(args[i], '=');
+		if (ft_isdigit(k_v[0][0]))
+			ft_error_file("export", "not an identifier", k_v[0], -1);
+		new = ft_lstnew(args[i]);
+		if (new == NULL)
+			ft_error("export", "malloc error", -1);
+		if (env_find(k_v[0], *env))
+			env_edit(k_v[0], k_v[1], env);
+		else
+			ft_lstadd_back(env, new);
+	}
+	return (0);
+}
+
+int ft_echo(char *cmd, char **args)
+{
+	int  i;
+	int  flag;
+
+	(void)cmd;
+	if (!args[1])
+	{
+		write(1, "\n", 1);
+		return (0);
+	}
 	i = 1;
+	flag = 1;
+	if (!ft_strncmp(args[1], "-n", 3))
+	{
+		i++;
+		flag = 0;
+	}
 	while (args[i])
 	{
-		k_v = ft_split(args[i], '=');
-		if (arr_len(k_v) != 2)
-		if (is_valid_for_export(args[i]) == 1)
-			ft_error_file("export", "not an identifier", k_v[0], 1);
-		
+		ft_putstr_fd(args[i], 1);
+		if (args[++i])
+			write(1, " ", 1);
 	}
+	if (flag == 1)
+		write(1, "\n", 1);
+	return (0);
 }
-//export
 
 int	is_builtin(char *cmd)
 {
@@ -205,9 +223,11 @@ int	own_execve(char *exec_cmd, char **args, t_list *env)
 {
 	if (ft_strncmp(exec_cmd, "pwd", ft_strlen("pwd") + 1) == 0)
 		return (ft_pwd(args, env));
-	else if (ft_strncmp(exec_cmd, "env", ft_strlen("env")+1) == 0)
+	else if (ft_strncmp(exec_cmd, "env", ft_strlen("env") + 1) == 0)
 		return (ft_env(env, args));
-	else if (ft_strncmp(exec_cmd, "export", ft_strlen("env")+1) == 0)
+	else if (ft_strncmp(exec_cmd, "export", ft_strlen("env") + 1) == 0)
+		return (ft_export(args, &env));
+	else if (ft_strncmp(exec_cmd, "echo", ft_strlen("echo") + 1) == 0)
 		return (ft_export(args, &env));
 	//need to add all cmds
 	

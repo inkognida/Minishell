@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/08 22:34:11 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/17 14:11:48 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_execute(char *cmd, t_list *envp)
 		if (execve(args[0], args, env) == -1)
 			ft_puterror();
 	}
-	else if (own_cmds(args[0]) == 1)
+	else if (is_builtin(args[0]) == 1)
 	{
 		if (own_execve(args[0], args, envp) == -1)
 			ft_puterror();
@@ -124,13 +124,12 @@ int	try_builtins(char **cmds, t_list *env)
 	len = arr_len(cmds);
 	args = split_args(cmds[len - 1], ' ');
 	if (ft_strncmp(args[0], "cd", 3) == 0)
-	{
-		ft_cd(args, &env);
-		return (1);
-	}
+		return (ft_cd(args, &env));
 	if (ft_strncmp(args[0], "exit", 5) == 0)
-		ft_exit(args, env);
-	return (0);
+		ft_exit(args, &env);
+	if (ft_strncmp(args[0], "export", 7) == 0)
+		return (ft_export(args, &env));
+	return (1);
 }
 
 //should include work_pipex here
@@ -146,7 +145,7 @@ void	pipex(char **cmds, t_list *env)
 	files = output_files(&(cmds[len - 1]));
 	while (files[++i])
 		close(open(files[i], O_RDWR | O_TRUNC | O_CREAT, 0777));
-	if (try_builtins(cmds, env))
+	if (try_builtins(cmds, env) == 0)
 		return ;
 	if (files[0] == NULL)
 	{

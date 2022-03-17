@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:15:09 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/08 23:00:53 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/17 13:38:56 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,6 @@ int		own_cmds(char *cmd);
 int		ft_cd(char **args, t_list **env);
 int		is_builtin(char *cmd);
 void	ft_exit(char **args, t_list **env);
+int		ft_export(char **args, t_list **env);
 
 #endif
