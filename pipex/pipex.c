@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/17 15:54:00 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 20:14:24 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,6 @@ void	pipex(char **cmds, t_list *env)
 	i = -1;
 	while (files[++i])
 	{
-		printf("%s\n", files[i]);
 		cmds_copy = copy_arr(cmds);
 		redirect_input(&(cmds_copy[0]));
 		ft_pipe(cmds_copy, env, files[i]);

@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/17 16:01:05 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 20:13:01 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,9 +188,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_list	*env;
 	char	*str;
-	char	*valid;
-
-	// char **back_env;
+	char	*stin_str;
 
 	(void)argc;
 	(void)argv;
@@ -200,14 +198,14 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
+		stin_str = ttyname(STDIN_FILENO);
 		str = ft_strtrim(readline("minishell> "), " \t");
 		add_history(str);
 		signal(SIGINT, handle_signal);
 		signal(SIGQUIT, SIG_IGN);
 		if (str == NULL)
 			return (free_all()); //need to free all
-		valid = valid_string(str);
-		if (valid == NULL)
+		if (valid_string(str) == NULL)
 		{
 			printf("quote error\n");
 			free(str);
@@ -216,6 +214,7 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strlen(str) == 0)
 			continue ;
 		launch_cmd(parse(str), env);
+		dup2(open(stin_str, O_RDONLY), 0);
 	}
 	return (0);
 }

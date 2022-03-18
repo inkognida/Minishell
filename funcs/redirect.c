@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 16:04:57 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/07 14:21:09 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/18 20:14:03 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	find_redirect_file(char *cmd, char redirect, int *start_len_i)
+int	find_redirect_file(char *cmd, char *redirect, int *start_len_i)
 {
 	start_len_i[2] = -1;
 	while (cmd[++start_len_i[2]])
@@ -25,7 +25,7 @@ int	find_redirect_file(char *cmd, char redirect, int *start_len_i)
 			while (cmd[++start_len_i[2]] != '"' && cmd[start_len_i[2]])
 				continue ;
 		}
-		if (cmd[start_len_i[2]] == redirect)
+		if (ft_strncmp(cmd + start_len_i[2], redirect, ft_strlen(redirect)) == 0)
 		{
 			start_len_i[0] = start_len_i[2];
 			while (cmd[++start_len_i[2]] == ' ')
@@ -74,7 +74,7 @@ void	redirect_input(char	**cmd)
 	s_l = malloc(sizeof(int) * 3);
 	fd_out = open("temp_input", O_RDWR | O_TRUNC | O_CREAT, 0777);
 	flag = 0;
-	while (find_redirect_file(*cmd, '<', s_l))
+	while (find_redirect_file(*cmd, "<", s_l))
 	{
 		flag = copy_file(ft_substr(*cmd, s_l[0], s_l[1]), fd_out);
 		temp[0] = ft_substr(*cmd, 0, s_l[0]);
@@ -84,6 +84,7 @@ void	redirect_input(char	**cmd)
 		free(temp[0]);
 		free(temp[1]);
 	}
+	close(fd_out);
 	free(s_l);
 	if (flag)
 	{
@@ -103,7 +104,7 @@ char	**output_files(char **cmd)
 	files = malloc(sizeof(char *) * ft_strlen(*cmd));
 	i = 0;
 	files[0] = NULL;
-	while (find_redirect_file(*cmd, '>', s_l))
+	while (find_redirect_file(*cmd, ">", s_l))
 	{
 		files[i++] = trim_free(ft_substr(*cmd, s_l[0], s_l[1]), " >");
 		files[i] = NULL;
@@ -116,32 +117,4 @@ char	**output_files(char **cmd)
 	}
 	free(s_l);
 	return (files);
-}
-
-int	redirect_output(char **cmd, char **envp)
-{
-	char	**files;
-	pid_t	pid;
-	int		i;
-
-	files = output_files(cmd);
-	if (files[0] == NULL)
-		return (0);
-	i = -1;
-	while (files[++i])
-	{
-		pid = fork();
-		if (pid == 0)
-		{
-			redirect_input(cmd);
-			dup2(open(files[i], O_RDWR | O_TRUNC | O_CREAT, 0777), 1);
-			ft_execute(*cmd, envp);
-		}
-		else if (pid < 0)
-			ft_puterror();
-		else
-			waitpid(pid, NULL, 0);
-	}
-	exit(0);
-	return (1);
 }
