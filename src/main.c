@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 22:32:52 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:57:55 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,10 @@ int	try_builtins(char **cmds, t_list *env)
 	args = split_args(cmds[len - 1], ' ');
 	if (ft_strncmp(args[0], "cd", 3) == 0)
 		return (ft_cd(args, &env));
+	if (ft_strncmp(args[0], "export", 3) == 0 && args[1])
+		return (ft_export(args, &env));
+	if (ft_strncmp(args[0], "unset", 3) == 0)
+		return (ft_unset(args, &env));
 	if (ft_strncmp(args[0], "exit", 5) == 0)
 		ft_exit(args, &env);
 	return (-1);

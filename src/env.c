@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:06:18 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 22:30:24 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:53:54 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,35 @@ void	env_edit(char *key, char *value, t_list **env)
 			free((*env)->content);
 			(*env)->content = new;
 		}
+		(*env) = (*env)->next;
+	}
+	(*env) = curr;
+}
+
+void	env_remove(char *key, t_list **env)
+{
+	t_list	*curr;
+	t_list	*prev;
+
+	curr = *env;
+	prev = NULL;
+	while (*env)
+	{
+		if (ft_strncmp(key, (*env)->content, ft_strlen(key)) == 0 \
+		&& ((char *)(*env)->content)[ft_strlen(key)] == '=')
+		{
+			if (prev == NULL)
+			{
+				prev = (*env)->next;
+				ft_lstdelone(*env, free);
+				*env = prev;
+				return ;
+			}
+			prev->next = (*env)->next;
+			ft_lstdelone(*env, free);
+			break ;
+		}
+		prev = *env;
 		(*env) = (*env)->next;
 	}
 	(*env) = curr;

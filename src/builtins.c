@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:02:21 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 22:18:02 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:56:26 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,6 +201,18 @@ int	ft_export(char **args, t_list **env)
 	return (0);
 }
 
+int	ft_unset(char **args, t_list **env)
+{
+	int	i;
+
+	if (args[1] == NULL)
+		ft_error("unset", "not enough arguments", -1);
+	i = 0;
+	while (args[++i])
+		env_remove(args[i], env);
+	return (0);
+}
+
 int ft_echo(char *cmd, char **args)
 {
 	int  i;
@@ -251,6 +263,8 @@ int	own_execve(char *exec_cmd, char **args, t_list *env)
 		return (ft_env(env, args));
 	else if (ft_strncmp(exec_cmd, "export", ft_strlen("env") + 1) == 0)
 		return (ft_export(args, &env));
+	else if (ft_strncmp(exec_cmd, "unset", ft_strlen("unset") + 1) == 0)
+		return (ft_unset(args, &env));
 	else if (ft_strncmp(exec_cmd, "echo", ft_strlen("echo") + 1) == 0)
 		return (ft_export(args, &env));
 	//need to add all cmds

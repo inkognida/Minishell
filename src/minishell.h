@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:15:09 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 22:19:08 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:55:43 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int		arr_len(char **cmds);
 
 void	env_edit(char *key, char *value, t_list **env);
 char	*env_find(char *key, t_list *lst);
+void	env_remove(char *key, t_list **env);
 
 char	**convert_list_to_arr(t_list *env);
 void	init_envp(t_list **env, char **envp);
@@ -67,6 +68,7 @@ int		ft_cd(char **args, t_list **env);
 int		is_builtin(char *cmd);
 void	ft_exit(char **args, t_list **env);
 int		ft_export(char **args, t_list **env);
+int		ft_unset(char **args, t_list **env);
 
 void	pipex(char **cmds, t_list *envp, char *file, char mode);
 
