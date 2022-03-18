@@ -6,13 +6,13 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 16:04:57 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/18 20:14:03 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 21:40:32 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/minishell.h"
 
-int	find_redirect_file(char *cmd, char *redirect, int *start_len_i)
+int	find_redirect_file(char *cmd, char *type, int *start_len_i)
 {
 	start_len_i[2] = -1;
 	while (cmd[++start_len_i[2]])
@@ -25,11 +25,12 @@ int	find_redirect_file(char *cmd, char *redirect, int *start_len_i)
 			while (cmd[++start_len_i[2]] != '"' && cmd[start_len_i[2]])
 				continue ;
 		}
-		if (ft_strncmp(cmd + start_len_i[2], redirect, ft_strlen(redirect)) == 0)
+		if (ft_strncmp(cmd + start_len_i[2], type, ft_strlen(type)) == 0)
 		{
 			start_len_i[0] = start_len_i[2];
-			while (cmd[++start_len_i[2]] == ' ')
-				continue ;
+			start_len_i[2] += ft_strlen(type);
+			while (cmd[start_len_i[2]] == ' ')
+				start_len_i[2]++;
 			while (cmd[start_len_i[2]] && cmd[start_len_i[2]] != ' ' && \
 			cmd[start_len_i[2]] != '<' && cmd[start_len_i[2]] != '>')
 				start_len_i[2]++;
@@ -93,28 +94,45 @@ void	redirect_input(char	**cmd)
 	}
 }
 
-char	**output_files(char **cmd)
+char	**find_output_files(char **cmd, char *type)
 {
 	char	**files;
 	char	*temp[2];
 	int		*s_l;
 	int		i;
 
-	s_l = malloc(sizeof(int) * 3);
 	files = malloc(sizeof(char *) * ft_strlen(*cmd));
-	i = 0;
 	files[0] = NULL;
-	while (find_redirect_file(*cmd, ">", s_l))
+	s_l = malloc(sizeof(int) * 3);
+	i = 0;
+	while (find_redirect_file(*cmd, type, s_l))
 	{
-		files[i++] = trim_free(ft_substr(*cmd, s_l[0], s_l[1]), " >");
+		files[i] = trim_free(ft_substr(*cmd, s_l[0], s_l[1]), " >");
+		if (type[1] == '>')
+			close(open(files[i++], O_RDWR | O_CREAT, 0777));
+		else
+			close(open(files[i++], O_RDWR | O_TRUNC | O_CREAT, 0777));
 		files[i] = NULL;
 		temp[0] = ft_substr(*cmd, 0, s_l[0]);
 		temp[1] = ft_substr(*cmd, s_l[0] + s_l[1], ft_strlen(*cmd));
 		free(*cmd);
-		*cmd = ft_strjoin(temp[0], temp[1]);
-		free(temp[0]);
-		free(temp[1]);
+		*cmd = ft_strjoin_free(temp[0], temp[1], 1, 1);
 	}
 	free(s_l);
 	return (files);
+}
+
+void	redirect_output(char **cmds, char **files, char mode, t_list *env)
+{
+	int		i;
+	char	**cmds_copy;
+
+	i = -1;
+	while (files[++i])
+	{
+		cmds_copy = copy_arr(cmds);
+		redirect_input(&(cmds_copy[0]));
+		ft_pipe(cmds_copy, env, files[i], mode);
+		free(cmds_copy);
+	}
 }

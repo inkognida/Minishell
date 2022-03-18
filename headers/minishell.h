@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:15:09 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 20:14:06 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 21:34:20 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,11 @@ typedef struct s_cmd
 }				t_cmd;
 
 char	**split_args(char *str, char delim);
+int		try_builtins(char **cmds, t_list *env);
+void	ft_pipe(char **cmds, t_list *envp, char *file, char mode);
 void	redirect_input(char	**cmd);
-int		redirect_output(char **cmd, char **envp);
+void	redirect_output(char **cmds, char **files, char mode, t_list *env);
+char	**find_output_files(char **cmd, char *type);
 char	*trim_free(char *str, char *charset);
 void	handle_signal(int sig);
 void	exe(char *cmd, char **envp);

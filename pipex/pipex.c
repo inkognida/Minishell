@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 20:14:24 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 21:41:33 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ft_execute(char *cmd, t_list *envp)
 	}
 }
 
-void	ft_pipe(char **cmds, t_list *envp, char *file)
+void	ft_pipe(char **cmds, t_list *envp, char *file, char mode)
 {
 	pid_t	pid;
 
@@ -47,7 +47,10 @@ void	ft_pipe(char **cmds, t_list *envp, char *file)
 		if (file)
 		{
 			close(1);
-			open(file, O_RDWR | O_TRUNC | O_CREAT, 0777);
+			if (mode == 'w')
+				open(file, O_WRONLY, 0777);
+			else if (mode == 'a')
+				open(file, O_WRONLY | O_APPEND, 0777);
 		}
 		work_pipex(cmds, envp);
 		exit(0);
@@ -127,40 +130,26 @@ int	try_builtins(char **cmds, t_list *env)
 		return (ft_cd(args, &env));
 	if (ft_strncmp(args[0], "exit", 5) == 0)
 		ft_exit(args, &env);
-	if (ft_strncmp(args[0], "export", 7) == 0)
-		return (ft_export(args, &env));
 	return (-1);
 }
 
 //should include work_pipex here
 void	pipex(char **cmds, t_list *env)
 {
-	int		i;
-	int 	len;
-	char	**files;
-	char	**cmds_copy;
+	char	**files_a;
+	char	**files_w;
 	
-	i = -1;
-	len = arr_len(cmds);
-	files = output_files(&(cmds[len - 1]));
-	while (files[++i])
-		close(open(files[i], O_RDWR | O_TRUNC | O_CREAT, 0777));
-	if (try_builtins(cmds, env) != -1)
-		return ;
-	if (files[0] == NULL)
+	files_a = find_output_files(&cmds[arr_len(cmds) - 1], ">>");
+	files_w = find_output_files(&cmds[arr_len(cmds) - 1], ">");
+	if (arr_len(files_a) + arr_len(files_w) == 0)
 	{
 		redirect_input(&(cmds[0]));
-		ft_pipe(cmds, env, NULL);
+		ft_pipe(cmds, env, NULL, 0);
 	}
-	i = -1;
-	while (files[++i])
-	{
-		cmds_copy = copy_arr(cmds);
-		redirect_input(&(cmds_copy[0]));
-		ft_pipe(cmds_copy, env, files[i]);
-		free(cmds_copy);
-	}
-	// exit(0);
+	if (try_builtins(cmds, env) != -1)
+		return ;
+	redirect_output(cmds, files_a, 'a', env);
+	redirect_output(cmds, files_w, 'w', env);
 }
 
 
