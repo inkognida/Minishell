@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 22:57:55 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 23:21:32 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	**split_args(char *str, char delim)
 	return (args);
 }
 
-int	try_builtins(char **cmds, t_list *env)
+int	try_builtins(char **cmds, t_list **env)
 {
 	int 	len;
 	char	**args;
@@ -106,17 +106,17 @@ int	try_builtins(char **cmds, t_list *env)
 	len = arr_len(cmds);
 	args = split_args(cmds[len - 1], ' ');
 	if (ft_strncmp(args[0], "cd", 3) == 0)
-		return (ft_cd(args, &env));
+		return (ft_cd(args, env));
 	if (ft_strncmp(args[0], "export", 3) == 0 && args[1])
-		return (ft_export(args, &env));
+		return (ft_export(args, env));
 	if (ft_strncmp(args[0], "unset", 3) == 0)
-		return (ft_unset(args, &env));
+		return (ft_unset(args, env));
 	if (ft_strncmp(args[0], "exit", 5) == 0)
-		ft_exit(args, &env);
+		ft_exit(args, env);
 	return (-1);
 }
 
-void	launch_cmd(char **cmds, t_list *env)
+void	launch_cmd(char **cmds, t_list **env)
 {
 	char	**files_a;
 	char	**files_w;
@@ -128,10 +128,10 @@ void	launch_cmd(char **cmds, t_list *env)
 	if (arr_len(files_a) + arr_len(files_w) == 0)
 	{
 		redirect_input(&(cmds[0]));
-		pipex(cmds, env, NULL, 0);
+		pipex(cmds, *env, NULL, 0);
 	}
-	redirect_output(cmds, files_a, 'a', env);
-	redirect_output(cmds, files_w, 'w', env);
+	redirect_output(cmds, files_a, 'a', *env);
+	redirect_output(cmds, files_w, 'w', *env);
 }
 
 
@@ -215,7 +215,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (ft_strlen(str) == 0)
 			continue ;
-		launch_cmd(ft_split(str, '|'), env);
+		launch_cmd(ft_split(str, '|'), &env);
 		dup2(open(stin_str, O_RDONLY), 0);
 	}
 	return (0);
