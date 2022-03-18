@@ -6,10 +6,9 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:06:18 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 22:18:08 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:30:24 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -55,9 +54,9 @@ char	*env_find(char *key, t_list *env)
 {
 	while (env)
 	{
-		if (ft_strncmp(key, env->content, ft_strlen(key)) == 0\
+		if (ft_strncmp(key, env->content, ft_strlen(key)) == 0 \
 		&& ((char *)env->content)[ft_strlen(key)] == '=')
-			return ((env->content) + ft_strlen(key)+1);
+			return ((env->content) + ft_strlen(key) + 1);
 		env = env->next;
 	}
 	return (NULL);
@@ -72,7 +71,7 @@ void	env_edit(char *key, char *value, t_list **env)
 	curr = *env;
 	while (*env)
 	{
-		if (ft_strncmp(key, (*env)->content, ft_strlen(key)) == 0\
+		if (ft_strncmp(key, (*env)->content, ft_strlen(key)) == 0 \
 		&& ((char *)(*env)->content)[ft_strlen(key)] == '=')
 		{
 			new_len = ft_strlen(key) + ft_strlen(value) + 2;

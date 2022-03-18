@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 22:18:18 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:32:52 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,13 +119,13 @@ void	launch_cmd(char **cmds, t_list *env)
 	
 	files_a = find_output_files(&cmds[arr_len(cmds) - 1], ">>");
 	files_w = find_output_files(&cmds[arr_len(cmds) - 1], ">");
+	if (try_builtins(cmds, env) != -1)
+		return ;
 	if (arr_len(files_a) + arr_len(files_w) == 0)
 	{
 		redirect_input(&(cmds[0]));
 		pipex(cmds, env, NULL, 0);
 	}
-	if (try_builtins(cmds, env) != -1)
-		return ;
 	redirect_output(cmds, files_a, 'a', env);
 	redirect_output(cmds, files_w, 'w', env);
 }
