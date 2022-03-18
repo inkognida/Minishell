@@ -6,11 +6,11 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 21:54:42 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:18:28 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/minishell.h"
+#include "minishell.h"
 
 void	ft_execute(char *cmd, t_list *envp)
 {

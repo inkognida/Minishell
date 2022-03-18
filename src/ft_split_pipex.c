@@ -6,11 +6,11 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 20:19:26 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 22:06:17 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:18:14 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/minishell.h"
+#include "minishell.h"
 
 static int	words(char const *str, char c)
 {

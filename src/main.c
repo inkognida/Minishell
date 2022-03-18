@@ -6,12 +6,12 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 21:56:38 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:18:18 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-#include "../headers/minishell.h"
+#include "minishell.h"
 
 int	g_exit_status;
 

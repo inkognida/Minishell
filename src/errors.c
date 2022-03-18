@@ -6,11 +6,11 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 20:20:59 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 22:10:15 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:18:11 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/minishell.h"
+#include "minishell.h"
 
 void	ft_puterror(void)
 {

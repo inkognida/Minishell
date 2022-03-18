@@ -6,11 +6,11 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 14:33:00 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 22:06:24 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:18:24 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/minishell.h"
+#include "minishell.h"
 
 void	ft_mainelse(int *fd1, int *fd2)
 {

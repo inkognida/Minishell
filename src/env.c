@@ -6,12 +6,12 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:06:18 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/17 14:56:10 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:18:08 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-#include "../headers/minishell.h"
+#include "minishell.h"
 
 void	init_envp(t_list **env, char **envp)
 {

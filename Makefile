@@ -12,7 +12,7 @@ NAME = minishell
 
 REM = rm -f
 
-HEADER = ./headers/minishell.h
+HEADER = ./src/minishell.h
 
 FLAGS = -Wall -Wextra -g #Werror need to be added   -Werror 
 

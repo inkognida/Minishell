@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   gnl_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:57:34 by hardella          #+#    #+#             */
-/*   Updated: 2022/02/26 17:18:07 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:19:23 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/gnl.h"
+#include "gnl.h"
 
 char	*ft_strjoin_gnl(char *s1, char *s2)
 {

@@ -6,11 +6,11 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:02:21 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/17 15:54:12 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:18:02 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/minishell.h"
+#include "minishell.h"
 
 int	ft_pwd(char **args, t_list *env)
 {

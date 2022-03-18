@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   gnl.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/14 12:43:06 by hardella          #+#    #+#             */
-/*   Updated: 2022/02/26 19:46:21 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:19:26 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/gnl.h"
+#include "gnl.h"
 
 static	char	*free_null(char **line)
 {
