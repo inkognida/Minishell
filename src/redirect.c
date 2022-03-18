@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 16:04:57 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/18 22:18:30 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:34:54 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	redirect_input(char	**cmd)
 	int		flag;
 
 	s_l = malloc(sizeof(int) * 3);
-	fd_out = open("temp_input", O_RDWR | O_TRUNC | O_CREAT, 0777);
+	fd_out = open(".temp_input", O_RDWR | O_TRUNC | O_CREAT, 0777);
 	flag = 0;
 	while (find_redirect_file(*cmd, "<", s_l))
 	{
@@ -90,7 +90,7 @@ void	redirect_input(char	**cmd)
 	if (flag)
 	{
 		*cmd = trim_free(*cmd, " ");
-		dup2(open("temp_input", O_RDONLY), 0);
+		dup2(open(".temp_input", O_RDONLY), 0);
 	}
 }
 
