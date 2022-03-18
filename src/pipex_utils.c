@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 14:33:00 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/06 20:33:41 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:06:24 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../headers/minishell.h"
 
 void	ft_mainelse(int *fd1, int *fd2)
 {

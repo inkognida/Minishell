@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 16:04:57 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/18 21:40:32 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 21:56:41 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ void	redirect_output(char **cmds, char **files, char mode, t_list *env)
 	{
 		cmds_copy = copy_arr(cmds);
 		redirect_input(&(cmds_copy[0]));
-		ft_pipe(cmds_copy, env, files[i], mode);
+		pipex(cmds_copy, env, files[i], mode);
 		free(cmds_copy);
 	}
 }

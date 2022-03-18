@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 21:41:33 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/18 21:54:42 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,31 +37,6 @@ void	ft_execute(char *cmd, t_list *envp)
 	}
 }
 
-void	ft_pipe(char **cmds, t_list *envp, char *file, char mode)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		if (file)
-		{
-			close(1);
-			if (mode == 'w')
-				open(file, O_WRONLY, 0777);
-			else if (mode == 'a')
-				open(file, O_WRONLY | O_APPEND, 0777);
-		}
-		work_pipex(cmds, envp);
-		exit(0);
-	}
-	else if (pid < 0)
-		ft_puterror();
-	else
-		waitpid(pid, 0, 0);
-}
-
-// here is our final pipex (I hope) (check struct in pipex.h)
 void	init_prc(t_pipex *prc, char **cmds)
 {
 	prc->fifo[0][0] = -1;
@@ -89,7 +64,7 @@ void	child(t_pipex *prc, char **cmds, t_list *envp)
 	ft_execute(cmds[prc->i], envp);
 }
 
-void	work_pipex(char **cmds, t_list *envp)
+void	ft_pipe(char **cmds, t_list *envp)
 {
 	t_pipex	prc;
 
@@ -116,40 +91,27 @@ void	work_pipex(char **cmds, t_list *envp)
 		prc.i++;
 	}
 }
-// end of out ideal pipex
 
-int	try_builtins(char **cmds, t_list *env)
+void	pipex(char **cmds, t_list *envp, char *file, char mode)
 {
-	char 	*trimmed;
-	int 	len;
-	char	**args;
-	
-	len = arr_len(cmds);
-	args = split_args(cmds[len - 1], ' ');
-	if (ft_strncmp(args[0], "cd", 3) == 0)
-		return (ft_cd(args, &env));
-	if (ft_strncmp(args[0], "exit", 5) == 0)
-		ft_exit(args, &env);
-	return (-1);
-}
+	pid_t	pid;
 
-//should include work_pipex here
-void	pipex(char **cmds, t_list *env)
-{
-	char	**files_a;
-	char	**files_w;
-	
-	files_a = find_output_files(&cmds[arr_len(cmds) - 1], ">>");
-	files_w = find_output_files(&cmds[arr_len(cmds) - 1], ">");
-	if (arr_len(files_a) + arr_len(files_w) == 0)
+	pid = fork();
+	if (pid == 0)
 	{
-		redirect_input(&(cmds[0]));
-		ft_pipe(cmds, env, NULL, 0);
+		if (file)
+		{
+			close(1);
+			if (mode == 'w')
+				open(file, O_WRONLY, 0777);
+			else if (mode == 'a')
+				open(file, O_WRONLY | O_APPEND, 0777);
+		}
+		ft_pipe(cmds, envp);
+		exit(0);
 	}
-	if (try_builtins(cmds, env) != -1)
-		return ;
-	redirect_output(cmds, files_a, 'a', env);
-	redirect_output(cmds, files_w, 'w', env);
+	else if (pid < 0)
+		ft_puterror();
+	else
+		waitpid(pid, 0, 0);
 }
-
-

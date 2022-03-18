@@ -5,6 +5,7 @@
 		"libft.h": "c",
 		"pipex.h": "c",
 		"_pid_t.h": "c",
-		"minishell.h": "c"
+		"minishell.h": "c",
+		"history.h": "c"
 	}
 }

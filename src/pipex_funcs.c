@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_funcs.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 21:30:40 by hardella          #+#    #+#             */
-/*   Updated: 2022/02/26 18:35:55 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/18 22:06:19 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../headers/minishell.h"
 
 char	*ft_strjoin_pipex(char *s1, char *s2)
 {
