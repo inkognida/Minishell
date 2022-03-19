@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:15:09 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 23:19:45 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/19 18:39:30 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ typedef struct s_pipex
 char	**split_args(char *str, char delim);
 int		try_builtins(char **cmds, t_list **env);
 void	redirect_input(char	**cmd);
-void	redirect_output(char **cmds, char **files, char mode, t_list *env);
-char	**find_output_files(char **cmd, char *type);
+void	redirect_output(char **cmds, char **files, t_list *env);
+char	**find_output_files(char **cmd);
 char	*trim_free(char *str, char *charset);
 void	handle_signal(int sig);
 void	exe(char *cmd, char **envp);

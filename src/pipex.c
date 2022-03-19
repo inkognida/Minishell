@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 22:18:28 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/19 18:38:19 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	pipex(char **cmds, t_list *envp, char *file, char mode)
 		{
 			close(1);
 			if (mode == 'w')
-				open(file, O_WRONLY, 0777);
+				open(file, O_WRONLY | O_TRUNC, 0777);
 			else if (mode == 'a')
 				open(file, O_WRONLY | O_APPEND, 0777);
 		}

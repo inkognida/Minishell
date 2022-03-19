@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 16:04:57 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/18 22:34:54 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/19 18:39:35 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	find_redirect_file(char *cmd, char *type, int *start_len_i)
 		if (ft_strncmp(cmd + start_len_i[2], type, ft_strlen(type)) == 0)
 		{
 			start_len_i[0] = start_len_i[2];
-			start_len_i[2] += ft_strlen(type);
+			start_len_i[2] += 2;
 			while (cmd[start_len_i[2]] == ' ')
 				start_len_i[2]++;
 			while (cmd[start_len_i[2]] && cmd[start_len_i[2]] != ' ' && \
@@ -94,7 +94,7 @@ void	redirect_input(char	**cmd)
 	}
 }
 
-char	**find_output_files(char **cmd, char *type)
+char	**find_output_files(char **cmd)
 {
 	char	**files;
 	char	*temp[2];
@@ -105,13 +105,9 @@ char	**find_output_files(char **cmd, char *type)
 	files[0] = NULL;
 	s_l = malloc(sizeof(int) * 3);
 	i = 0;
-	while (find_redirect_file(*cmd, type, s_l))
+	while (find_redirect_file(*cmd, ">", s_l))
 	{
-		files[i] = trim_free(ft_substr(*cmd, s_l[0], s_l[1]), " >");
-		if (type[1] == '>')
-			close(open(files[i++], O_RDWR | O_CREAT, 0777));
-		else
-			close(open(files[i++], O_RDWR | O_TRUNC | O_CREAT, 0777));
+		files[i++] = ft_substr(*cmd, s_l[0], s_l[1]);
 		files[i] = NULL;
 		temp[0] = ft_substr(*cmd, 0, s_l[0]);
 		temp[1] = ft_substr(*cmd, s_l[0] + s_l[1], ft_strlen(*cmd));
@@ -122,17 +118,27 @@ char	**find_output_files(char **cmd, char *type)
 	return (files);
 }
 
-void	redirect_output(char **cmds, char **files, char mode, t_list *env)
+void	redirect_output(char **cmds, char **files, t_list *env)
 {
 	int		i;
 	char	**cmds_copy;
+	char	*trimmed;
 
 	i = -1;
 	while (files[++i])
 	{
 		cmds_copy = copy_arr(cmds);
 		redirect_input(&(cmds_copy[0]));
-		pipex(cmds_copy, env, files[i], mode);
+		if (files[i][1] == '>')
+			trimmed = ft_strtrim(files[i] + 2, " ");
+		else
+			trimmed = ft_strtrim(files[i] + 1, " ");
+		if (files[i][1] == '>')
+			pipex(cmds_copy, env, trimmed, 'a');
+		else
+			pipex(cmds_copy, env, trimmed, 'w');
+		free(files[i]);
 		free(cmds_copy);
 	}
+	free(trimmed);
 }

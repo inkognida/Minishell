@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 23:21:32 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/19 18:39:38 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,22 +116,41 @@ int	try_builtins(char **cmds, t_list **env)
 	return (-1);
 }
 
+void	create_files(char **files)
+{
+	int	i;
+	char *trimmed;
+
+	i = -1;
+	while (files[++i])
+	{
+		trimmed = ft_strtrim(files[i], " >");
+		if (files[i][1] == '>')
+			trimmed = ft_strtrim(files[i] + 2, " ");
+		else
+			trimmed = ft_strtrim(files[i] + 1, " ");
+		if (files[i][1] == '>')
+			close(open(trimmed, O_WRONLY | O_CREAT, 0777));
+		else
+			close(open(trimmed, O_WRONLY | O_CREAT | O_TRUNC, 0777));
+	}
+	free(trimmed);
+}
+
 void	launch_cmd(char **cmds, t_list **env)
 {
-	char	**files_a;
-	char	**files_w;
+	char	**files;
 	
-	files_a = find_output_files(&cmds[arr_len(cmds) - 1], ">>");
-	files_w = find_output_files(&cmds[arr_len(cmds) - 1], ">");
+	files = find_output_files(&cmds[arr_len(cmds) - 1]);
+	create_files(files);
 	if (try_builtins(cmds, env) != -1)
 		return ;
-	if (arr_len(files_a) + arr_len(files_w) == 0)
+	if (arr_len(files) == 0)
 	{
 		redirect_input(&(cmds[0]));
 		pipex(cmds, *env, NULL, 0);
 	}
-	redirect_output(cmds, files_a, 'a', *env);
-	redirect_output(cmds, files_w, 'w', *env);
+	redirect_output(cmds, files, *env);
 }
 
 
