@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:15:09 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/19 18:39:30 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/19 19:38:21 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,15 @@ typedef struct s_pipex
 
 char	**split_args(char *str, char delim);
 int		try_builtins(char **cmds, t_list **env);
-void	redirect_input(char	**cmd);
-void	redirect_output(char **cmds, char **files, t_list *env);
-char	**find_output_files(char **cmd);
+int		redirect_input(char	**cmd);
+void	redirect_output(char **cmds, char **files, t_list *env, int input_flag);
+char	**find_files(char **cmd, char *type);
 char	*trim_free(char *str, char *charset);
 void	handle_signal(int sig);
 void	exe(char *cmd, char **envp);
-char	**output_files(char **cmd);
 char	**copy_arr(char	**arr);
 int		arr_len(char **cmds);
+void	create_files(char **files);
 
 void	env_edit(char *key, char *value, t_list **env);
 char	*env_find(char *key, t_list *lst);
@@ -93,7 +93,6 @@ int		ft_error_file(char *from, char *file, char *message, int exit_flag);
 int		ft_strlen_pipex(const char *s);
 void	ft_execute(char *cmd, t_list *env);
 int		ft_open(char *filename, int flag);
-void	ft_heredoc(char *limiter);
 void	ft_chpar(char *cmd, t_list *env);
 int		len_cmds(char **cmds);
 

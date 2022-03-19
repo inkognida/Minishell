@@ -1,4 +1,4 @@
-SRCS	=	./src/main.c ./src/redirect.c ./src/utils.c\
+SRCS	=	./src/main.c ./src/redirect_input.c ./src/redirect_output.c ./src/utils.c\
 			./get_next_line/gnl_utils.c ./get_next_line/gnl.c \
 			./src/ft_split_pipex.c ./src/pipex.c ./src/pipex_funcs.c ./src/pipex_utils.c \
 			./src/env.c ./src/builtins.c ./src/errors.c\
