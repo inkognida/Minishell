@@ -6,10 +6,9 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/19 19:43:26 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/19 21:12:34 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 
@@ -124,6 +123,11 @@ void	launch_cmd(char **cmds, t_list **env)
 	files = find_files(&cmds[arr_len(cmds) - 1], ">");
 	create_files(files);
 	input_flag = redirect_input(&(cmds[0]));
+	if (input_flag == 1 && arr_len(cmds) == 1 && ft_strlen_free(ft_strtrim(cmds[0], " ")) == 0)
+	{
+		just_copy(files);
+		return ;
+	}
 	if (input_flag == -1)
 		return ;
 	if (try_builtins(cmds, env) != -1)

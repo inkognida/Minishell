@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:15:09 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/19 19:38:21 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/19 20:46:41 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,19 @@ typedef struct s_pipex
 
 char	**split_args(char *str, char delim);
 int		try_builtins(char **cmds, t_list **env);
+
 int		redirect_input(char	**cmd);
 void	redirect_output(char **cmds, char **files, t_list *env, int input_flag);
+int		copy_file(char	*in_file, int fd_out);
+void	just_copy(char **files);
 char	**find_files(char **cmd, char *type);
+void	create_files(char **files);
+
 char	*trim_free(char *str, char *charset);
 void	handle_signal(int sig);
 void	exe(char *cmd, char **envp);
 char	**copy_arr(char	**arr);
 int		arr_len(char **cmds);
-void	create_files(char **files);
 
 void	env_edit(char *key, char *value, t_list **env);
 char	*env_find(char *key, t_list *lst);
@@ -61,6 +65,7 @@ char	**convert_list_to_arr(t_list *env);
 void	init_envp(t_list **env, char **envp);
 void	display(t_list *env);
 void	display_arr(char **envp);
+
 
 int		own_execve(char *exec_cmd, char **args, t_list *env);
 int		own_cmds(char *cmd);
