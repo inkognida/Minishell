@@ -1,8 +1,8 @@
-SRCS	=	./src/main.c ./src/redirect_input.c ./src/redirect_output.c ./src/utils.c\
+SRCS	=	./src/main.c ./src/utils/utils.c ./src/utils/env.c ./src/utils/errors.c \
+			./src/redirect/redirect_input.c ./src/redirect/redirect_output.c \
 			./get_next_line/gnl_utils.c ./get_next_line/gnl.c \
 			./src/ft_split_pipex.c ./src/pipex.c ./src/pipex_funcs.c ./src/pipex_utils.c \
-			./src/env.c ./src/builtins.c ./src/errors.c\
-
+			./src/builtins/builtins.c ./src/builtins/builtins_export.c ./src/builtins/builtins_path.c\
 
 OBJ_SRC = 	${SRCS:.c=.o}
 

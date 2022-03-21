@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/19 21:12:34 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/21 15:02:19 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ char	*valid_string(char *str)
 	return (valid_str);
 }
 
-char	**split_args(char *str, char delim)
+char	**split_args(char *str, char delim, int remove)
 {
 	char	*valid;
 	char	**args;
@@ -83,7 +83,8 @@ char	**split_args(char *str, char delim)
 					valid[i] = -1;
 		}
 	}
-	valid = valid_string(valid);
+	if (remove)
+		valid = valid_string(valid);
 	args = ft_split(valid, delim);
 	free(valid);
 	i = -1;
@@ -95,24 +96,6 @@ char	**split_args(char *str, char delim)
 				args[i][j] = delim;
 	}
 	return (args);
-}
-
-int	try_builtins(char **cmds, t_list **env)
-{
-	int 	len;
-	char	**args;
-	
-	len = arr_len(cmds);
-	args = split_args(cmds[len - 1], ' ');
-	if (ft_strncmp(args[0], "cd", 3) == 0)
-		return (ft_cd(args, env));
-	if (ft_strncmp(args[0], "export", 3) == 0 && args[1])
-		return (ft_export(args, env));
-	if (ft_strncmp(args[0], "unset", 3) == 0)
-		return (ft_unset(args, env));
-	if (ft_strncmp(args[0], "exit", 5) == 0)
-		ft_exit(args, env);
-	return (-1);
 }
 
 void	launch_cmd(char **cmds, t_list **env)
@@ -196,6 +179,114 @@ void display_arr(char **envp)
 
 // display functions
 
+
+int	ft_isspace(int c)
+{
+	if ((c >= 9 && c <= 13) || c == ' ')
+		return (1);
+	return (0);
+}
+
+char	*ft_strncat(char *dest, char *src, int nb)
+{
+	int i;
+	int j;
+
+	j = 0;
+	i = 0;
+	while (dest[i] != '\0')
+		i++;
+	while (j < nb)
+	{
+		dest[i] = src[j];
+		i++;
+		j++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
+
+char	*get_env_name(char *str, int i, t_list *env, int f)
+{
+	char	*tmp;
+	int		j;
+
+	j = 0;
+	tmp = malloc(sizeof(char) * ft_lstsize(env));
+	if (!tmp)
+		return (NULL);
+	while (!ft_isspace(str[i]) && str[i] && str[i] != '$' && str[i] != '\'' && str[i] != '"' && str[i] != ':' && str[i] != '/')
+	{
+		tmp[j] = str[i];
+		i++;
+		j++;
+	}
+	tmp[j] = '\0';
+	// printf("%s\n", tmp);
+	return (tmp);
+}
+
+
+char	*env_variables(char *str, t_list *env)
+{
+	int		i;
+	int		f;
+	char	*tmp;
+	char	*env_tmp;
+
+	i = 0;
+	tmp = malloc(1);
+	if (!tmp)
+		return (NULL);
+	f = 1;
+	tmp[0] = '\0';
+	while (i < (int)ft_strlen(str))
+	{
+		if (str[i] == '"')
+		{
+			tmp = ft_strjoin_free(tmp, "\"", 1, 0);
+			while (str[++i] && str[i] != '"')
+			{
+				if (str[i] == '$')
+				{
+					env_tmp = get_env_name(str, i + 1, env, f);
+					if (env_find(env_tmp, env))
+						tmp = ft_strjoin_free(tmp, env_find(env_tmp, env), 1, 0);
+					i += ft_strlen(env_tmp);
+					free(env_tmp);
+					if (str[i] == '"')
+					{
+						i++;
+						break ;
+					}
+				}
+				else
+					tmp = ft_strjoin_free(tmp, ft_substr(str, i, 1), 1, 1);
+			}
+			tmp = ft_strjoin_free(tmp, "\"", 1, 0);
+		}
+		else if (str[i] && str[i] == '\'')
+		{
+			tmp = ft_strjoin_free(tmp, "\'", 1, 0);
+			while (str[++i] && str[i] != '\'')
+				tmp = ft_strjoin_free(tmp, ft_substr(str, i, 1), 1, 1);
+			tmp = ft_strjoin_free(tmp, "\'", 1, 0);
+		}
+		else if (str[i] == '$')
+		{
+			env_tmp = get_env_name(str, i + 1, env, f);
+			if (env_find(env_tmp, env))
+				tmp = ft_strjoin_free(tmp, env_find(env_tmp, env), 1, 0);
+			i += ft_strlen(env_tmp);
+			free(env_tmp);
+		}
+		else
+			tmp = ft_strjoin_free(tmp, ft_substr(str, i, 1), 1, 1);
+		i++;
+	}
+	return (tmp);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_list	*env;
@@ -225,7 +316,8 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (ft_strlen(str) == 0)
 			continue ;
-		launch_cmd(ft_split(str, '|'), &env);
+		str = env_variables(str, env);
+		launch_cmd(split_args(str, '|', 0), &env);
 		dup2(open(stin_str, O_RDONLY), 0);
 		free(str);
 	}

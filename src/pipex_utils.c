@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 14:33:00 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/18 22:18:24 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/21 15:21:28 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ char	*ft_findpath(char *cmd, char **envp)
 	int		i;
 
 	i = 0;
-	while (ft_strnstr_pipex(envp[i], "PATH", 4) == 0 && envp[i])
+	while (envp[i] && ft_strnstr_pipex(envp[i], "PATH", 4) == 0 )
 		i++;
 	if (envp[i] == '\0')
-		ft_puterror();
+		ft_error_file("minishell", "command not found", cmd, 127);
 	paths = ft_split_pipex(envp[i] + 5, ':');
 	i = 0;
 	while (paths[i])

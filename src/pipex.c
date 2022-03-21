@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/19 18:38:19 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/21 15:23:02 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,27 @@
 void	ft_execute(char *cmd, t_list *envp)
 {
 	char	**args;
-	char	**env = convert_list_to_arr(envp);
-	args = split_args(ft_strtrim(cmd, " "), ' ');
+	char	**env;
+
+	env = convert_list_to_arr(envp);
+	args = split_args(ft_strtrim(cmd, " "), ' ', 1);
 	if (args == NULL || envp == NULL)
-		exit(1); //fix that exit (maybe (free()) need)
+		exit(1);
 	else if (ft_strnstr(args[0], "/", ft_strlen(args[0])))
 	{
 		if (execve(args[0], args, env) == -1)
-			ft_puterror();
+			ft_error_file("minishell", "command not found", cmd, 127);
 	}
 	else if (is_builtin(args[0]) == 1)
 	{
 		if (own_execve(args[0], args, envp) == -1)
-			ft_puterror();
-		exit(0); //end proccess
+			ft_error_file("minishell", "command not found", cmd, 127);
+		exit(0);
 	}
 	else
 	{
 		if (execve(ft_findpath(args[0], env), args, env) == -1)
-			ft_puterror();
+			ft_error_file("minishell", "command not found", cmd, 127);
 	}
 }
 
@@ -72,10 +74,10 @@ void	ft_pipe(char **cmds, t_list *envp)
 	while (prc.i < prc.len)
 	{
 		if (pipe(prc.fifo[prc.cur_pipe]) == -1)
-			ft_puterror(); //special code
+			ft_puterror();
 		prc.pid = fork();
 		if (prc.pid == -1)
-			ft_puterror(); //special code
+			ft_puterror();
 		if (prc.pid == 0)
 			child(&prc, cmds, envp);
 		close(prc.fifo[1 - prc.cur_pipe][0]);

@@ -6,20 +6,11 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:17:00 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/18 22:18:36 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/21 11:46:37 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-char	*trim_free(char *str, char *charset)
-{
-	char	*trimmed;
-
-	trimmed = ft_strtrim(str, charset);
-	free(str);
-	return (trimmed);
-}
+#include "../minishell.h"
 
 int	arr_len(char **cmds)
 {
@@ -42,4 +33,14 @@ char	**copy_arr(char	**arr)
 		new[i] = ft_strdup(arr[i]);
 	new[i] = NULL;
 	return (new);
+}
+
+void	free_arr(char **arr)
+{
+	int	i;
+
+	i = -1;
+	while (arr[++i])
+		free(arr[i]);
+	free(arr);
 }

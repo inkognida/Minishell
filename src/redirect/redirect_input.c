@@ -6,11 +6,11 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 19:11:18 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/19 21:06:25 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/21 11:47:58 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	ft_heredoc(char *limiter, int fd_input)
 {
