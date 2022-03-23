@@ -6,13 +6,13 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:57:27 by hardella          #+#    #+#             */
-/*   Updated: 2021/10/13 10:57:27 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/23 20:25:03 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strdup(const char *src)
+char	*ft_strdup(char *src)
 {
 	char	*copy;
 	int		i;

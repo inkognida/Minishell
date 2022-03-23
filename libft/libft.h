@@ -6,7 +6,7 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:58:22 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/22 13:38:42 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/23 20:23:36 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 int		ft_atoi(const char *str);
 void	*ft_calloc(size_t count, size_t size);
-char	*ft_strdup(const char *src);
+char	*ft_strdup(char *src);
 
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
