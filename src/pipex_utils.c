@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/06 14:33:00 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/21 15:21:28 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/23 16:03:06 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	ft_mainelse(int *fd1, int *fd2)
 {
+	(void)*fd2;
 	dup2(*fd1, 0);
 }
 
@@ -42,9 +43,9 @@ char	*ft_findpath(char *cmd, char **envp)
 	int		i;
 
 	i = 0;
-	while (envp[i] && ft_strnstr_pipex(envp[i], "PATH", 4) == 0 )
+	while (envp[i] && ft_strnstr_pipex(envp[i], "PATH", 4) == 0)
 		i++;
-	if (envp[i] == '\0')
+	if (envp[i] == (void *)0)
 		ft_error_file("minishell", "command not found", cmd, 127);
 	paths = ft_split_pipex(envp[i] + 5, ':');
 	i = 0;

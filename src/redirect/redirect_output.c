@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_output.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 16:04:57 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/21 11:48:02 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/23 15:42:41 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 20:20:59 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/21 11:49:33 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/23 12:08:58 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	ft_error(char *from, char *message, int exit_flag)
 	return (exit_flag);
 }
 
+extern int	g_exit_status;
+
 int	ft_error_file(char *from, char *file, char *message, int exit_flag)
 {
 	int	should_exit;
@@ -68,6 +70,7 @@ int	ft_error_file(char *from, char *file, char *message, int exit_flag)
 	ft_putstr_fd(": ", 2);
 	ft_putstr_fd(message, 2);
 	ft_putstr_fd("\n", 2);
+	g_exit_status = 127;
 	if (should_exit)
 		exit(exit_flag);
 	return (exit_flag);

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include "./headers/minishell.h"
+// #include "./headers/minishell.h"
 
 // int System(const char *cmd)
 // {
@@ -27,81 +27,81 @@
 
 // #define ft_close(fd) if (fd < -1) close(fd), fd=-1
 
-int	arr_len(char **cmds)
-{
-	int	i;
+// int	arr_len(char **cmds)
+// {
+// 	int	i;
 
-	i = 0;
-	while (cmds[i] != NULL)
-		i++;
-	return (i);
-}
+// 	i = 0;
+// 	while (cmds[i] != NULL)
+// 		i++;
+// 	return (i);
+// }
 
-void	ft_close(int fd)
-{
-	if (fd < -1)
-		close(fd);
-	fd = -1;
-}
+// void	ft_close(int fd)
+// {
+// 	if (fd < -1)
+// 		close(fd);
+// 	fd = -1;
+// }
 
-int main (int argc, char **cmds)
-{
-	int			fifo[2][2];
-	int			cur_pipe;
-	int			i;
-	pid_t		pid;
-	int			status;
+// int main (int argc, char **cmds)
+// {
+// 	int			fifo[2][2];
+// 	int			cur_pipe;
+// 	int			i;
+// 	pid_t		pid;
+// 	int			status;
 
-	fifo[0][0] = -1;
-	fifo[0][1] = -1;
-	fifo[1][0] = -1;
-	fifo[1][1] = -1;
-	cur_pipe = 0;
-	i = 1;
-	while (i < argc)
-	{
-		if (pipe(fifo[cur_pipe]) == -1)
-		{
-			perror("pipe");
-			exit(2);
-		}
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			exit(3);
-		}
-		if (pid == 0)
-		{
-			if (i > 1)
-			{
-				dup2(fifo[1 - cur_pipe][0], STDIN_FILENO);
-				ft_close(fifo[1-cur_pipe][0]);
-			}
-			if (i < argc - 1)
-			{
-				dup2(fifo[cur_pipe][1], STDOUT_FILENO);
-				ft_close(fifo[cur_pipe][0]);
-				ft_close(fifo[cur_pipe][1]);
-			}
-			if (execl("/bin/sh", "sh", "-c", cmds[i], 0) == -1) // if (ft_execute(cmds[i], envp) == -1)
-			{
-				perror("execute");
-				exit(5);
-			}
-		}
-		ft_close(fifo[1 - cur_pipe][0]);
-		ft_close(fifo[cur_pipe][1]);
-		cur_pipe = 1 - cur_pipe;
-		i++;
-	}
-	ft_close(fifo[1 - cur_pipe][0]);
-	// while (i++ < argc)
-	// 	waitpid(pid, &status, 0);
-	// while// while(waitpid(pid, &status, 0) == pid && WIFEXITED(status));;
-	while (waitpid(-1, 0, 0));
-	return 0;
-}
+// 	fifo[0][0] = -1;
+// 	fifo[0][1] = -1;
+// 	fifo[1][0] = -1;
+// 	fifo[1][1] = -1;
+// 	cur_pipe = 0;
+// 	i = 1;
+// 	while (i < argc)
+// 	{
+// 		if (pipe(fifo[cur_pipe]) == -1)
+// 		{
+// 			perror("pipe");
+// 			exit(2);
+// 		}
+// 		pid = fork();
+// 		if (pid == -1)
+// 		{
+// 			perror("fork");
+// 			exit(3);
+// 		}
+// 		if (pid == 0)
+// 		{
+// 			if (i > 1)
+// 			{
+// 				dup2(fifo[1 - cur_pipe][0], STDIN_FILENO);
+// 				ft_close(fifo[1-cur_pipe][0]);
+// 			}
+// 			if (i < argc - 1)
+// 			{
+// 				dup2(fifo[cur_pipe][1], STDOUT_FILENO);
+// 				ft_close(fifo[cur_pipe][0]);
+// 				ft_close(fifo[cur_pipe][1]);
+// 			}
+// 			if (execl("/bin/sh", "sh", "-c", cmds[i], 0) == -1) // if (ft_execute(cmds[i], envp) == -1)
+// 			{
+// 				perror("execute");
+// 				exit(5);
+// 			}
+// 		}
+// 		ft_close(fifo[1 - cur_pipe][0]);
+// 		ft_close(fifo[cur_pipe][1]);
+// 		cur_pipe = 1 - cur_pipe;
+// 		i++;
+// 	}
+// 	ft_close(fifo[1 - cur_pipe][0]);
+// 	// while (i++ < argc)
+// 	// 	waitpid(pid, &status, 0);
+// 	// while// while(waitpid(pid, &status, 0) == pid && WIFEXITED(status));;
+// 	while (waitpid(-1, 0, 0));
+// 	return 0;
+// }
 
 // #define CLOSE(fd) if (fd < -1) close(fd), fd=-1
 
@@ -164,3 +164,35 @@ int main (int argc, char **cmds)
 // 	} 	while (!rc);
 // 	return (rc);
 // }
+
+int	continue_valid(char *str, int *i)
+{
+	if (str[*i] == '$')
+	{
+		printf("Here\n");
+		*i += 1;
+		return (1);
+	}
+	else if (str[*i] == '@')
+		return (2);
+	return (0);
+}
+
+
+int main(void)
+{
+	char s[10] = "abo$@ba";
+
+	int i = 0;
+	while (s[i])
+	{
+		printf("before %d\n", i);
+		if (continue_valid(s, &i) == 1 || continue_valid(s, &i) == 2)
+		{
+			printf("%c %d\n", s[i], i);
+		}
+		i++;
+	}
+}
+
+

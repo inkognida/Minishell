@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:02:21 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/21 14:10:08 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/23 16:03:18 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_env(t_list *env, char **args)
 		ft_error_file("env", args[1], "No such file or directory", 127);
 	while (env)
 	{
-		printf("%s\n", env->content);
+		printf("%s\n", (char *)env->content);
 		env = env->next;
 	}
 	return (0);

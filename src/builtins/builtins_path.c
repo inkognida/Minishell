@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 21:22:37 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/19 21:33:15 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/23 16:05:02 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	ft_exit(char **args, t_list **env)
 {
 	int	status;
 
+	(void)env;
 	status = ft_atoi(args[0] + 4);
 	exit(status);
 }
