@@ -1,8 +1,10 @@
-SRCS	=	./src/main.c ./src/utils/utils.c ./src/utils/env.c ./src/utils/errors.c \
-			./src/redirect/redirect_input.c ./src/redirect/redirect_output.c \
-			./get_next_line/gnl_utils.c ./get_next_line/gnl.c \
-			./src/ft_split_pipex.c ./src/pipex.c ./src/pipex_funcs.c ./src/pipex_utils.c \
-			./src/builtins/builtins.c ./src/builtins/builtins_export.c ./src/builtins/builtins_path.c\
+SRCS    =    ./src/main.c ./src/utils/utils.c ./src/utils/env.c ./src/utils/errors.c \
+            ./src/redirect/redirect_input.c ./src/redirect/redirect_output.c \
+            ./get_next_line/gnl_utils.c ./get_next_line/gnl.c \
+            ./src/ft_split_pipex.c ./src/pipex.c ./src/pipex_funcs.c ./src/pipex_utils.c \
+            ./src/builtins/builtins.c ./src/builtins/builtins_export.c ./src/builtins/builtins_path.c \
+            ./src/utils/args_split.c ./src/utils/valid.c ./src/utils/env_var1.c ./src/utils/env_var2.c \
+            ./src/utils/main_help.c
 
 OBJ_SRC = 	${SRCS:.c=.o}
 

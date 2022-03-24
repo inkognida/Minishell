@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:58:08 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/19 18:41:26 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/23 22:04:16 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,14 @@ char	*ft_strtrim(char const *s1, char const *set)
 		*res++ = s1[i++];
 	*res = '\0';
 	res -= (ft_strlen(s1) - count_to_trim(s1, set));
+	return (res);
+}
+
+char	*ft_strtrim_free(char *s1, char *set)
+{
+	char	*res;
+
+	res = ft_strtrim(s1, set);
+	free(s1);
 	return (res);
 }

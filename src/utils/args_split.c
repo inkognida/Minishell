@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   args_split.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 16:08:39 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/23 16:09:06 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/24 15:13:52 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,15 @@ void	split_args_helper(char *valid, char ***args, char delim)
 			if ((*args)[i][j] == -1)
 				(*args)[i][j] = delim;
 	}
+}
+
+char	*get_and_free(char *valid)
+{
+	char	*temp;
+
+	temp = valid_string(valid);
+	free(valid);
+	return (temp);
 }
 
 char	**split_args(char *str, char delim, int remove)
@@ -50,7 +59,7 @@ char	**split_args(char *str, char delim, int remove)
 					valid[i] = -1;
 	}
 	if (remove)
-		valid = valid_string(valid);
+		valid = get_and_free(valid);
 	args = ft_split(valid, delim);
 	split_args_helper(valid, &args, delim);
 	return (args);

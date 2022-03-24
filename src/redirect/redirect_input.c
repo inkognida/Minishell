@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 19:11:18 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/21 11:47:58 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/24 14:59:31 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	redirect_input(char	**cmd)
 	return (flag);
 }
 
-void	just_copy(char **files)
+int	just_copy(char **files)
 {
 	int		i;
 	int		fd_out;
@@ -105,4 +105,6 @@ void	just_copy(char **files)
 	}
 	if (i == 0)
 		copy_file(".temp_input", 1);
+	free_arr(files);
+	return (1);
 }

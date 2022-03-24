@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_output.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 16:04:57 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/23 15:42:41 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/24 15:14:16 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ char	**find_files(char **cmd, char *type)
 	int		i;
 
 	files = malloc(sizeof(char *) * ft_strlen(*cmd));
+	if (files == NULL)
+		return (NULL);
 	files[0] = NULL;
 	s_l = malloc(sizeof(int) * 3);
 	i = 0;
@@ -88,8 +90,7 @@ void	redirect_output(char **cmds, char **files, t_list *env, int input_flag)
 			pipex(cmds_copy, env, trimmed, 'a');
 		else
 			pipex(cmds_copy, env, trimmed, 'w');
-		free(files[i]);
-		free(cmds_copy);
+		free_arr(cmds_copy);
 		free(trimmed);
 	}
 }
@@ -104,14 +105,9 @@ void	create_files(char **files)
 	{
 		trimmed = ft_strtrim(files[i], " >");
 		if (files[i][1] == '>')
-			trimmed = ft_strtrim(files[i] + 2, " ");
-		else
-			trimmed = ft_strtrim(files[i] + 1, " ");
-		if (files[i][1] == '>')
 			close(open(trimmed, O_WRONLY | O_CREAT, 0777));
 		else
 			close(open(trimmed, O_WRONLY | O_CREAT | O_TRUNC, 0777));
-	}
-	if (i > 0)
 		free(trimmed);
+	}
 }

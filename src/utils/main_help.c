@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_help.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 16:12:35 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/23 16:14:21 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/23 22:06:09 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,18 @@ int	ft_isspace(int c)
 
 int	invalid_str(char *str)
 {
-	if (valid_string(str) == NULL)
+	char	*valid;
+
+	valid = valid_string(str);
+	if (valid == NULL)
 	{
 		printf("quote error\n");
 		g_exit_status = 127;
 		free(str);
+		free(valid);
 		return (0);
 	}
+	free(valid);
 	return (1);
 }
 

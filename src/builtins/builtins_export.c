@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_export.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 21:17:31 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/23 16:04:38 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/23 22:54:16 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	mini_export(char **args, char **k_v, int i, t_list **env)
 			ft_error("export", "malloc error", -1);
 		ft_lstadd_back(env, new);
 	}
+	free_arr(k_v);
 	return (0);
 }
 
@@ -99,6 +100,7 @@ int	ft_export(char **args, t_list **env)
 	i = 0;
 	while (args[++i])
 		mini_export(args, k_v, i, env);
+	free_arr(args);
 	return (0);
 }
 
@@ -111,5 +113,6 @@ int	ft_unset(char **args, t_list **env)
 	i = 0;
 	while (args[++i])
 		env_remove(args[i], env);
+	free_arr(args);
 	return (0);
 }

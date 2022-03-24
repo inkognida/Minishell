@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:02:21 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/23 16:03:18 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/24 15:01:32 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,11 @@ int	try_builtins(char **cmds, t_list **env)
 
 	len = arr_len(cmds);
 	args = split_args(cmds[len - 1], ' ', 1);
+	if (args == NULL)
+	{
+		free(args);
+		return (-1);
+	}
 	if (ft_strncmp(args[0], "cd", 3) == 0)
 		return (ft_cd(args, env));
 	if (ft_strncmp(args[0], "export", 3) == 0 && args[1])
@@ -97,5 +102,6 @@ int	try_builtins(char **cmds, t_list **env)
 		return (ft_unset(args, env));
 	if (ft_strncmp(args[0], "exit", 5) == 0)
 		ft_exit(args, env);
+	// free_arr(args);
 	return (-1);
 }

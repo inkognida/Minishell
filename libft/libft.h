@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:58:22 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/22 13:38:42 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/23 22:04:28 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strjoin_free(char *s1, char *s2, int f1, int f2);
 char	*join_free(char *s1, char *s2, int f1, int f2);
 char	*ft_strtrim(char const *s1, char const *set);
+char	*ft_strtrim_free(char *s1, char *set);
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));

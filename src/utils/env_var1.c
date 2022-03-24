@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_var1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 16:10:44 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/23 16:17:22 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/23 23:22:27 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ char	*env_variables(char *str, t_list *env)
 		return (NULL);
 	tmps[0][0] = '\0';
 	loop_env_variables(tmps, str, i, env);
+	free(str);
 	return (tmps[0]);
 }
 

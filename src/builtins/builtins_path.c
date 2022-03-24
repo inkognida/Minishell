@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtins_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 21:22:37 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/23 16:05:02 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/23 22:55:41 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_cd_home(t_list **env, char *path)
+int	ft_cd_home(t_list **env, char *path, char **args)
 {
 	char	*old;
 	char	*new;
@@ -34,6 +34,7 @@ int	ft_cd_home(t_list **env, char *path)
 	env_edit("PWD", new, env);
 	if (path != NULL)
 		free(new);
+	free_arr(args);
 	return (0);
 }
 
@@ -48,11 +49,11 @@ int	ft_cd(char **args, t_list **env)
 	if (arr_len(args) > 3)
 		ft_error("cd", "too many arguments", -1);
 	if (arr_len(args) == 1)
-		return (ft_cd_home(env, NULL));
+		return (ft_cd_home(env, NULL, args));
 	else if (arr_len(args) == 2)
 	{
 		if (args[1][0] == '~')
-			return (ft_cd_home(env, args[1]));
+			return (ft_cd_home(env, args[1], args));
 		if (chdir(args[1]) == -1)
 			ft_error_file("cd", "no such file or directory", args[1], -1);
 		old = env_find("PWD", *env);
@@ -61,6 +62,7 @@ int	ft_cd(char **args, t_list **env)
 		env_edit("PWD", new, env);
 		free(new);
 	}
+	free_arr(args);
 	return (0);
 }
 
