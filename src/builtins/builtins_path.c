@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 21:22:37 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/23 22:55:41 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/24 18:41:23 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,23 @@ int	ft_cd_home(t_list **env, char *path, char **args)
 	return (0);
 }
 
+int	ft_cd_back(t_list **env, char **args)
+{
+	char	*old;
+	char	*new;
+
+	old = ft_strdup(env_find("OLDPWD", *env));
+	new = ft_strdup(env_find("PWD", *env));
+	chdir(old);
+	printf("%s\n", old);
+	env_edit("PWD", old, env);
+	env_edit("OLDPWD", new, env);
+	free(old);
+	free(new);
+	free_arr(args);
+	return (0);
+}
+
 int	ft_cd(char **args, t_list **env)
 {
 	char	*old;
@@ -54,16 +71,18 @@ int	ft_cd(char **args, t_list **env)
 	{
 		if (args[1][0] == '~')
 			return (ft_cd_home(env, args[1], args));
+		else if (args[1][0] == '-' && ft_strlen(args[1]) == 1)
+			return (ft_cd_back(env, args));
 		if (chdir(args[1]) == -1)
 			ft_error_file("cd", "no such file or directory", args[1], -1);
 		old = env_find("PWD", *env);
+		printf("old %s\n", old);
 		env_edit("OLDPWD", old, env);
 		new = getcwd(new, 1000);
 		env_edit("PWD", new, env);
 		free(new);
 	}
-	free_arr(args);
-	return (0);
+	return (free_arrs(args, NULL, 1, 0));
 }
 
 int	ft_pwd(char **args, t_list *env)

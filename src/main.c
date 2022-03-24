@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/24 15:17:47 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/24 18:21:05 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	launch_cmd(char **cmds, t_list **env)
 	input_flag = redirect_input(&(cmds[0]));
 	if (input_flag == 1 && arr_len(cmds) == 1 \
 		&& ft_strlen_free(ft_strtrim(cmds[0], " ")) == 0)
-		return (just_copy(files));
+		return (just_copy(files, cmds));
 	if (input_flag == -1)
 		return (free_arrs(files, cmds, 1, 1));
 	if (try_builtins(cmds, env) != -1)
@@ -73,25 +73,16 @@ void	handle_signal(int sig)
 	}
 }
 
-int	main(int argc, char **argv, char **envp)
+int	cycle(char *stdin_str, char *str, t_list *env)
 {
-	t_list	*env;
-	char	*str;
-	char	*stin_str;
-
-	(void)argc;
-	(void)argv;
-	env = NULL;
-	init_envp(&env, envp);
-	signals();
-	g_exit_status = 0;
 	while (1)
 	{
-		stin_str = ttyname(STDIN_FILENO);
+		stdin_str = ttyname(STDIN_FILENO);
 		str = ft_strtrim_free(readline("minishell> "), " \t");
-		if (str == NULL || stin_str == NULL)
+		if (str == NULL || stdin_str == NULL)
 			return (free_env(env));
-		add_history(str);
+		if (ft_strlen(str))
+			add_history(str);
 		signals();
 		if (invalid_str(str) == 0)
 			continue ;
@@ -102,8 +93,25 @@ int	main(int argc, char **argv, char **envp)
 		}
 		str = env_variables(str, env);
 		launch_cmd(split_args(str, '|', 0), &env);
-		dup2(open(stin_str, O_RDONLY), 0);
+		dup2(open(stdin_str, O_RDONLY), 0);
 		free(str);
 	}
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_list	*env;
+	char	*str;
+	char	*stdin_str;
+
+	(void)argc;
+	(void)argv;
+	env = NULL;
+	init_envp(&env, envp);
+	signals();
+	g_exit_status = 0;
+	str = NULL;
+	stdin_str = NULL;
+	cycle(stdin_str, str, env);
 	return (0);
 }

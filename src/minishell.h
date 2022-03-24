@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:15:09 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/23 16:02:02 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/24 17:48:05 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	ft_execute(char *cmd, t_list *env);
 int		ft_open(char *filename, int flag);
 void	ft_chpar(char *cmd, t_list *env);
 int		len_cmds(char **cmds);
+int		free_arrs(char **arr1, char **arr2, int f1, int f2);
 
 void	work_pipex(char **cmds, t_list *env);
 

@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 21:17:31 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/23 22:54:16 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/24 17:55:18 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	print_env(char **arr)
 		else
 			printf("%s\n", val);
 	}
-	free(arr);
+	free_arr(arr);
 }
 
 int	ft_export_show(t_list *env)
@@ -69,15 +69,13 @@ int	mini_export(char **args, char **k_v, int i, t_list **env)
 	if (args[i][0] == '=')
 		return (ft_error_file("minishell", args[i] + 1, "not found", -1));
 	k_v = ft_split(args[i], '=');
-	if (k_v[1] == NULL)
-		k_v[1] = "";
-	if (ft_isdigit(k_v[0][0]))
-		return (ft_error_file("export", "not an identifier", k_v[0], -1));
+	if (ft_isdigit(args[i][0]))
+		return (ft_error_export_free("export", "not an identifier", k_v));
 	if (env_find(k_v[0], *env))
 		env_edit(k_v[0], args[i] + ft_strlen(k_v[0]) + 1, env);
 	else
 	{
-		new = ft_lstnew(args[i]);
+		new = ft_lstnew(ft_strdup(args[i]));
 		if (new == NULL)
 			ft_error("export", "malloc error", -1);
 		ft_lstadd_back(env, new);
@@ -93,10 +91,7 @@ int	ft_export(char **args, t_list **env)
 
 	k_v = NULL;
 	if (args[1] == NULL)
-	{
-		free_arr(args);
 		return (ft_export_show(*env));
-	}
 	i = 0;
 	while (args[++i])
 		mini_export(args, k_v, i, env);

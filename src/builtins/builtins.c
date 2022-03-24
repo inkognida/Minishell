@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:02:21 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/24 15:01:32 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/24 17:25:28 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,14 @@ int	ft_echo(char *cmd, char **args)
 
 int	is_builtin(char *cmd)
 {
-	if (ft_strncmp(cmd, "cd", ft_strlen(cmd)) == 0 || \
-	ft_strncmp(cmd, "pwd", ft_strlen(cmd)) == 0 || \
-	ft_strncmp(cmd, "env", ft_strlen(cmd)) == 0 || \
-	ft_strncmp(cmd, "export", ft_strlen(cmd)) == 0 || \
-	ft_strncmp(cmd, "unset", ft_strlen(cmd)) == 0 || \
-	ft_strncmp(cmd, "export", ft_strlen(cmd)) == 0 || \
-	ft_strncmp(cmd, "exit", ft_strlen(cmd)) == 0 || \
-	ft_strncmp(cmd, "echo", ft_strlen(cmd)) == 0)
+	if (ft_strncmp(cmd, "cd", 3) == 0 || \
+	ft_strncmp(cmd, "pwd", 4) == 0 || \
+	ft_strncmp(cmd, "env", 4) == 0 || \
+	ft_strncmp(cmd, "export", 7) == 0 || \
+	ft_strncmp(cmd, "unset", 6) == 0 || \
+	ft_strncmp(cmd, "export", 7) == 0 || \
+	ft_strncmp(cmd, "exit", 5) == 0 || \
+	ft_strncmp(cmd, "echo", 5) == 0)
 		return (1);
 	return (0);
 }
@@ -73,7 +73,7 @@ int	own_execve(char *exec_cmd, char **args, t_list *env)
 		return (ft_pwd(args, env));
 	else if (ft_strncmp(exec_cmd, "env", ft_strlen("env") + 1) == 0)
 		return (ft_env(env, args));
-	else if (ft_strncmp(exec_cmd, "export", ft_strlen("env") + 1) == 0)
+	else if (ft_strncmp(exec_cmd, "export", ft_strlen("export") + 1) == 0)
 		return (ft_export(args, &env));
 	else if (ft_strncmp(exec_cmd, "unset", ft_strlen("unset") + 1) == 0)
 		return (ft_unset(args, &env));
@@ -86,7 +86,9 @@ int	try_builtins(char **cmds, t_list **env)
 {
 	int		len;
 	char	**args;
+	int		status;
 
+	status = 0;
 	len = arr_len(cmds);
 	args = split_args(cmds[len - 1], ' ', 1);
 	if (args == NULL)
@@ -102,6 +104,6 @@ int	try_builtins(char **cmds, t_list **env)
 		return (ft_unset(args, env));
 	if (ft_strncmp(args[0], "exit", 5) == 0)
 		ft_exit(args, env);
-	// free_arr(args);
+	free_arr(args);
 	return (-1);
 }

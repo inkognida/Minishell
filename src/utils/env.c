@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:06:18 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/21 11:46:47 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/24 18:44:29 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void	env_edit(char *key, char *value, t_list **env)
 			ft_strlcat(new, key, new_len);
 			ft_strlcat(new, "=", new_len);
 			ft_strlcat(new, value, new_len);
+			ft_strlcat(new, "\0", new_len);
+			printf("new %s\n", new);
 			free((*env)->content);
 			(*env)->content = new;
 		}

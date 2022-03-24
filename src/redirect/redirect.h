@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 21:34:24 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/23 23:13:02 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/24 17:59:42 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 int		redirect_input(char	**cmd);
 void	redirect_output(char **cmds, char **files, t_list *env, int input_flag);
 int		copy_file(char	*in_file, int fd_out);
-int		just_copy(char **files);
+int		just_copy(char **files, char **cmds);
 char	**find_files(char **cmd, char *type);
 void	create_files(char **files);
 

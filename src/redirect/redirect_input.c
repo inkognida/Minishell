@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 19:11:18 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/24 14:59:31 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/24 18:14:32 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,12 @@ int	ft_heredoc(char *limiter, int fd_input)
 	char	*line;
 
 	line = ft_strtrim(readline("heredoc> "), " \t");
-	while (ft_strncmp(line, limiter, ft_strlen(line)))
+	while (ft_strncmp(line, limiter, ft_strlen(limiter) + 1))
 	{
 		write(fd_input, line, ft_strlen(line));
 		write(fd_input, "\n", 1);
-		free(line);
+		if (line)
+			free(line);
 		line = ft_strtrim(readline("heredoc> "), " \t");
 	}
 	free(line);
@@ -82,7 +83,7 @@ int	redirect_input(char	**cmd)
 	return (flag);
 }
 
-int	just_copy(char **files)
+int	just_copy(char **files, char **cmds)
 {
 	int		i;
 	int		fd_out;
@@ -105,6 +106,5 @@ int	just_copy(char **files)
 	}
 	if (i == 0)
 		copy_file(".temp_input", 1);
-	free_arr(files);
-	return (1);
+	return (free_arrs(files, cmds, 1, 1));
 }
