@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_help.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 16:12:35 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/23 22:06:09 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/25 16:54:09 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ extern int	g_exit_status;
 
 int	free_env(t_list *env)
 {
-	free(env);
+	ft_lstclear(&env, free);
 	g_exit_status = 1;
 	return (g_exit_status);
 }

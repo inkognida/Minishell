@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/24 18:21:05 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/25 16:48:56 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	handle_signal(int sig)
 		g_exit_status = 130;
 		write(1, "\n", 1);
 		rl_on_new_line();
-		rl_replace_line("", 0);
+		// rl_replace_line("", 0);
 		rl_redisplay();
 	}
 	if (sig == 3)
@@ -96,6 +96,7 @@ int	cycle(char *stdin_str, char *str, t_list *env)
 		dup2(open(stdin_str, O_RDONLY), 0);
 		free(str);
 	}
+	ft_lstclear(&env, free);
 }
 
 int	main(int argc, char **argv, char **envp)

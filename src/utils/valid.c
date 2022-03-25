@@ -6,7 +6,7 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 16:06:44 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/23 16:08:16 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/25 17:19:45 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,11 @@ char	*valid_string(char *str)
 	valid_str = malloc(sizeof(char) * ft_strlen(str));
 	if (valid_str == NULL)
 		return (NULL);
-	return (valid_helper(str, valid_str, i, j));
+	valid_str = valid_helper(str, valid_str, i, j);
+	if (valid_str == NULL)
+	{
+		free(valid_str);
+		return (NULL);
+	}
+	return (valid_str);
 }

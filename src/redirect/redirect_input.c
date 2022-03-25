@@ -3,30 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 19:11:18 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/24 18:14:32 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/25 16:18:32 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	free_heredoc(char *line, char *limiter)
+{
+	free(line);
+	free(limiter);
+}
+
 int	ft_heredoc(char *limiter, int fd_input)
 {
 	char	*line;
+	pid_t	heredoc;
 
-	line = ft_strtrim(readline("heredoc> "), " \t");
-	while (ft_strncmp(line, limiter, ft_strlen(limiter) + 1))
+	heredoc = fork();
+	if (heredoc < 0)
+		exit(1);
+	else if (heredoc == 0)
 	{
-		write(fd_input, line, ft_strlen(line));
-		write(fd_input, "\n", 1);
-		if (line)
-			free(line);
-		line = ft_strtrim(readline("heredoc> "), " \t");
+		signal(SIGINT, on_heredoc_sig);
+		line = ft_strtrim_free(readline("heredoc> "), " \t");
+		while (ft_strncmp(line, limiter, ft_strlen(limiter) + 1))
+		{
+			write(fd_input, line, ft_strlen(line));
+			write(fd_input, "\n", 1);
+			if (line)
+				free(line);
+			line = ft_strtrim_free(readline("heredoc> "), " \t");
+		}
+		if (ft_strncmp(line, limiter, ft_strlen(limiter) + 1) == 0)
+			exit(0);
+		free_heredoc(line, limiter);
 	}
-	free(line);
-	free(limiter);
+	else
+		waitpid(-1, 0, 0);
 	return (1);
 }
 

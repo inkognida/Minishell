@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 20:02:21 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/24 17:25:28 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/25 10:28:57 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+extern int	g_exit_status;
 
 int	ft_env(t_list *env, char **args)
 {
@@ -70,15 +72,17 @@ int	is_builtin(char *cmd)
 int	own_execve(char *exec_cmd, char **args, t_list *env)
 {
 	if (ft_strncmp(exec_cmd, "pwd", ft_strlen("pwd") + 1) == 0)
-		return (ft_pwd(args, env));
+		g_exit_status = ft_pwd(args, env);
 	else if (ft_strncmp(exec_cmd, "env", ft_strlen("env") + 1) == 0)
-		return (ft_env(env, args));
+		g_exit_status = ft_env(env, args);
 	else if (ft_strncmp(exec_cmd, "export", ft_strlen("export") + 1) == 0)
-		return (ft_export(args, &env));
+		g_exit_status = ft_export(args, &env);
 	else if (ft_strncmp(exec_cmd, "unset", ft_strlen("unset") + 1) == 0)
-		return (ft_unset(args, &env));
+		g_exit_status = ft_unset(args, &env);
 	else if (ft_strncmp(exec_cmd, "echo", ft_strlen("echo") + 1) == 0)
-		return (ft_echo(exec_cmd, args));
+		g_exit_status = ft_echo(exec_cmd, args);
+	if (g_exit_status != -1)
+		return (g_exit_status);
 	return (-1);
 }
 

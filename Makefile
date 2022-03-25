@@ -4,7 +4,7 @@ SRCS    =    ./src/main.c ./src/utils/utils.c ./src/utils/env.c ./src/utils/erro
             ./src/ft_split_pipex.c ./src/pipex.c ./src/pipex_funcs.c ./src/pipex_utils.c \
             ./src/builtins/builtins.c ./src/builtins/builtins_export.c ./src/builtins/builtins_path.c \
             ./src/utils/args_split.c ./src/utils/valid.c ./src/utils/env_var1.c ./src/utils/env_var2.c \
-            ./src/utils/main_help.c
+            ./src/utils/main_help.c ./src/redirect/redirect_help.c
 
 OBJ_SRC = 	${SRCS:.c=.o}
 
@@ -16,7 +16,32 @@ REM = rm -f
 
 HEADER = ./src/minishell.h
 
-FLAGS = -Wall -Wextra -g #Werror need to be added   -Werror 
+# FLAGS = -Wall -Wextra -g #Werror need to be added   -Werror 
+
+# readline = ./readline/libhistory.a ./readline/libreadline.a
+
+# .PHONY: all clean fclean re
+
+# %.o:	%.c ${HEADER}
+# 			${CC} ${FLAGS} -c $< -o $@
+
+# ${NAME}: ${OBJ_SRC}
+# 			make -C ./libft/
+# 			${CC} ${FLAGS} ${OBJ_SRC} ./libft/libft.a $(readline) -ltermcap -o ${NAME}
+
+# all: ${NAME}
+
+# clean:
+# 	make clean -C ./libft/
+# 	${REM} ${OBJ_SRC}
+
+# fclean: clean
+# 	make fclean -C ./libft/
+# 	${REM} ${OBJ_SRC} ${NAME}
+
+# re: fclean all
+
+FLAGS = -Wall -Wextra -g #Werror need to be added
 
 readline = ./readline/libhistory.a ./readline/libreadline.a
 
@@ -27,7 +52,7 @@ readline = ./readline/libhistory.a ./readline/libreadline.a
 
 ${NAME}: ${OBJ_SRC}
 			make -C ./libft/
-			${CC} ${FLAGS} ${OBJ_SRC} ./libft/libft.a $(readline) -ltermcap -o ${NAME}
+			${CC} ${FLAGS} ${OBJ_SRC} ./libft/libft.a -o ${NAME} -lncurses -ltermcap -ledit
 
 all: ${NAME}
 
@@ -39,4 +64,4 @@ fclean: clean
 	make fclean -C ./libft/
 	${REM} ${OBJ_SRC} ${NAME}
 
-re: fclean all
+re: fclean all%

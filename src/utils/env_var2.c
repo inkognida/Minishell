@@ -6,7 +6,7 @@
 /*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 16:11:30 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/23 16:11:49 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/25 10:11:04 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,15 @@ void	env_variables_helper_one(char *tmps[2], char *str, int *i)
 
 void	env_variables_helper_two(char *tmps[2], char *str, int *i, t_list *env)
 {
+	char	*tmp;
+
 	tmps[1] = get_env_name(str, (*i) + 1, env);
 	if (ft_strncmp(tmps[1], "?", ft_strlen("?") + 1) == 0)
-		tmps[0] = join_free(tmps[0], update_exit(), 1, 0);
+	{
+		tmp = update_exit();
+		tmps[0] = join_free(tmps[0], tmp, 1, 0);
+		free(tmp);
+	}
 	else if (env_find(tmps[1], env))
 		tmps[0] = join_free(tmps[0], env_find(tmps[1], env), 1, 0);
 	(*i) += ft_strlen(tmps[1]);

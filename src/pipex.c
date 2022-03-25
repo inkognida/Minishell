@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
+/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 17:53:14 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/24 17:20:06 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/25 10:29:27 by hardella         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ void	ft_execute(char *cmd, t_list *envp)
 	else if (is_builtin(args[0]) == 1)
 	{
 		if (own_execve(args[0], args, envp) == -1)
-			ft_error_file("minishell", "command not found", args[0], -127);
+			ft_error_file("minishell", "command not found", args[0], 127);
 		free_arr(args);
-		exit(127);
+		exit(g_exit_status);
 	}
 	else
 	{
