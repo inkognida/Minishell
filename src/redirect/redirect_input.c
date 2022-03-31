@@ -3,19 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_input.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 19:11:18 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/25 16:18:32 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/25 20:30:07 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	free_heredoc(char *line, char *limiter)
+int	free_heredoc(char *line, char *limiter, int f)
 {
-	free(line);
+	if (f)
+		free(line);
 	free(limiter);
+	return (1);
 }
 
 int	ft_heredoc(char *limiter, int fd_input)
@@ -40,11 +42,11 @@ int	ft_heredoc(char *limiter, int fd_input)
 		}
 		if (ft_strncmp(line, limiter, ft_strlen(limiter) + 1) == 0)
 			exit(0);
-		free_heredoc(line, limiter);
+		free_heredoc(line, limiter, 1);
 	}
 	else
 		waitpid(-1, 0, 0);
-	return (1);
+	return (free_heredoc(NULL, limiter, 0));
 }
 
 int	copy_file(char	*in_file, int fd_out)
@@ -60,6 +62,7 @@ int	copy_file(char	*in_file, int fd_out)
 	if (fd_in < 0)
 	{
 		ft_error_file("minishell", "no such file or directory", trimmed, -1);
+		free(trimmed);
 		return (-1);
 	}
 	line = get_next_line(fd_in);
@@ -89,11 +92,14 @@ int	redirect_input(char	**cmd)
 	while (files[++i])
 	{
 		if (files[i][1] == '<')
+		{
 			flag = ft_heredoc(ft_strtrim(files[i] + 2, " "), fd_input);
+			free(files[i]);
+		}
 		else
 			flag = copy_file(files[i], fd_input);
 		if (flag == -1)
-			return (-1);
+			return (otkrovenniy_kostil(files, -1));
 	}
 	free(files);
 	close(fd_input);

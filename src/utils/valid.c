@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   valid.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 16:06:44 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/25 17:19:45 by hardella         ###   ########.fr       */
+/*   Updated: 2022/04/01 00:13:42 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ char	*valid_helper(char *str, char *valid_str, int i, int j)
 char	*valid_string(char *str)
 {
 	char	*valid_str;
+	char	*temp;
 	int		i;
 	int		j;
 
@@ -70,11 +71,13 @@ char	*valid_string(char *str)
 	valid_str = malloc(sizeof(char) * ft_strlen(str));
 	if (valid_str == NULL)
 		return (NULL);
-	valid_str = valid_helper(str, valid_str, i, j);
-	if (valid_str == NULL)
+	temp = valid_helper(str, valid_str, i, j);
+	if (temp == NULL)
 	{
 		free(valid_str);
 		return (NULL);
 	}
+	else
+		valid_str = temp;
 	return (valid_str);
 }

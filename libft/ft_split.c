@@ -3,97 +3,94 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/13 10:54:58 by hardella          #+#    #+#             */
-/*   Updated: 2021/10/13 13:46:31 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/25 20:41:44 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	words(char const *str, char c)
+int	static	count_substrings(char const *s, char c)
 {
-	int	i;
-	int	co;
+	int		count;
+	size_t	i;
 
-	co = 0;
 	i = 0;
-	while (str[i])
+	while (s[i] == c)
+		i++;
+	if (s[i] != c)
 	{
-		while (str[i] == c && str[i])
+		count = 1;
+		while (s[i] && s[i] != c)
 			i++;
-		if (str[i])
-		{
-			while (str[i] != c && str[i])
-				i++;
-			co++;
-		}
 	}
-	return (co);
+	while (s[i] && i < ft_strlen(s))
+	{
+		if (s[i] == c && s[i + 1] && s[i + 1] != c)
+		{
+			count++;
+			while (s[i] == c)
+				i++;
+		}
+		else
+			i++;
+	}
+	return (count);
 }
 
-static char	*word_str(const char *str, int s, int f)
-{
-	char	*word;
-	int		i;
-
-	i = 0;
-	word = (char *)malloc(sizeof(char) * (f - s + 1));
-	if (!(word))
-		return (NULL);
-	while (s < f)
-		word[i++] = str[s++];
-	word[i] = '\0';
-	return (word);
-}
-
-static char	**free_split(char **split)
+static char	**free_arr(char **strs)
 {
 	int	i;
 
-	i = -1;
-	while (split[++i])
-		free(split[i]);
-	free(split);
+	i = 0;
+	while (strs[i])
+	{
+		free(strs[i]);
+		i++;
+	}
+	free(strs);
+	strs = NULL;
 	return (NULL);
 }
 
-static char	**kostyl(char const *s, char c)
+static char	**fill_strs(char **strs, char const *s, char c)
 {
-	char	**split;
+	int		i;
+	int		j;
+	int		len;
 
-	if (!(s))
-		return (NULL);
-	split = (char **)malloc(sizeof(char *) * (words(s, c) + 1));
-	return (split);
+	i = 0;
+	j = -1;
+	while (strs && i < (int)ft_strlen(s))
+	{
+		len = 0;
+		while (s[i] != c && s[i])
+		{
+			len++;
+			i++;
+		}
+		i++;
+		if (len == 0)
+			continue ;
+		strs[++j] = ft_substr(s, i - len - 1, len);
+		if (strs[j] == NULL)
+			return (free_arr(strs));
+	}
+	strs[++j] = 0;
+	return (strs);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	unsigned int	i;
-	unsigned int	j;
-	int				flag;
-	char			**split;
+	char	**strs;
 
-	split = kostyl(s, c);
-	if (!(split))
+	if (!s)
 		return (NULL);
-	i = -1;
-	j = 0;
-	flag = -1;
-	while (++i <= ft_strlen(s))
-	{
-		if (s[i] != c && flag < 0)
-			flag = i;
-		else if ((s[i] == c || i == ft_strlen(s)) && flag >= 0)
-		{
-			split[j] = word_str(s, flag, i);
-			if (!(split[j++]))
-				return (free_split(split));
-			flag = -1;
-		}
-	}
-	split[j] = 0;
-	return (split);
+	strs = (char **)malloc(sizeof(char *) * (count_substrings(s, c) + 1));
+	if (strs == NULL)
+		return (NULL);
+	strs = fill_strs(strs, s, c);
+	return (strs);
 }

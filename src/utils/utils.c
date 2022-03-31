@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/04 20:17:00 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/21 11:46:37 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/25 20:29:38 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,19 @@ void	free_arr(char **arr)
 	while (arr[++i])
 		free(arr[i]);
 	free(arr);
+}
+
+int	free_arrs(char **arr1, char **arr2, int f1, int f2)
+{
+	if (f1)
+		free_arr(arr1);
+	if (f2)
+		free_arr(arr2);
+	return (1);
+}
+
+int	otkrovenniy_kostil(char	**arr, int code)
+{
+	free(arr);
+	return (code);
 }

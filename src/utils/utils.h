@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 21:38:55 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/25 10:53:00 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/25 20:29:47 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 char	**copy_arr(char	**arr);
 int		arr_len(char **cmds);
 void	free_arr(char **arr);
+int		otkrovenniy_kostil(char	**arr, int code);
 
 void	env_edit(char *key, char *value, t_list **env);
 char	*env_find(char *key, t_list *lst);
@@ -52,5 +53,6 @@ void	loop_env_variables(char *tmps[2], char *str, int i, t_list *env);
 char	*env_variables(char *str, t_list *env);
 char	*ft_strncat(char *dest, char *src, int nb);
 char	*update_exit(void);
+int		free_arrs(char **arr1, char **arr2, int f1, int f2);
 
 #endif

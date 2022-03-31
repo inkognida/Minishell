@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hardella <hardella@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/26 17:13:07 by hardella          #+#    #+#             */
-/*   Updated: 2022/03/25 16:48:56 by hardella         ###   ########.fr       */
+/*   Updated: 2022/03/25 20:06:39 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,6 @@ void	launch_cmd_helper(void)
 {
 	close(0);
 	open(".temp_input", O_RDONLY);
-}
-
-int	free_arrs(char **arr1, char **arr2, int f1, int f2)
-{
-	if (f1)
-		free_arr(arr1);
-	if (f2)
-		free_arr(arr2);
-	return (1);
 }
 
 int	launch_cmd(char **cmds, t_list **env)
@@ -63,7 +54,7 @@ void	handle_signal(int sig)
 		g_exit_status = 130;
 		write(1, "\n", 1);
 		rl_on_new_line();
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 	if (sig == 3)

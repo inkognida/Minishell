@@ -6,7 +6,7 @@
 /*   By: yironmak <yironmak@student.21-school.ru    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/19 21:22:37 by yironmak          #+#    #+#             */
-/*   Updated: 2022/03/24 18:41:23 by yironmak         ###   ########.fr       */
+/*   Updated: 2022/03/25 20:16:40 by yironmak         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int	ft_cd(char **args, t_list **env)
 		if (chdir(args[1]) == -1)
 			ft_error_file("cd", "no such file or directory", args[1], -1);
 		old = env_find("PWD", *env);
-		printf("old %s\n", old);
 		env_edit("OLDPWD", old, env);
 		new = getcwd(new, 1000);
 		env_edit("PWD", new, env);
